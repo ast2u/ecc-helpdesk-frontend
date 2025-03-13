@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './pages/login/login.component';
-import { LayoutComponent } from './pages/layout/layout.component';
-import { AuthGuard } from './auth/guards/auth.guard';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { NoAuthGuard } from './auth/guards/no-auth.guard';
+import { LoginComponent } from './features/auth/login/login.component';
+import { LayoutComponent } from './layout/layout.component';
+import { AuthGuard } from './core/guards/auth.guard';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
+import { NoAuthGuard } from './core/guards/no-auth.guard';
+import { EmployeesComponent } from './features/employees/employees.component';
 
 
 export const routes: Routes = [
@@ -23,6 +24,11 @@ export const routes: Routes = [
         children: [
             { path: 'dashboard',
                 component: DashboardComponent,
+                canActivate: [AuthGuard]
+            },
+            {
+                path: 'employees',
+                component: EmployeesComponent,
                 canActivate: [AuthGuard]
             }
         ]

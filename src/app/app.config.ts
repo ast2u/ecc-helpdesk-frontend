@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { customInterceptor } from './interceptor/custom.interceptor';
+import { customInterceptor } from './core/interceptor/custom.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideHttpClient(withInterceptors([customInterceptor])), provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes)]
