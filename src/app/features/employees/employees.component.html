@@ -1,0 +1,53 @@
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+            <th>Birth Date</th>
+            <th>House Number</th>
+            <th>Street</th>
+            <th>City</th>
+            <th>Zip Code</th>
+            <th>Contact Number</th>
+            <th>Employment Status</th>
+            <th>Roles</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+            <th>Created By</th>
+            <th>Updated By</th>
+          </tr>
+    </thead>
+    <tbody>
+        <!-- Loop through the employeeList to generate table rows -->
+        <tbody>
+            <tr *ngFor="let employee of employeeList; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ employee.fullName.firstName }}</td>
+              <td>{{ employee.fullName.middleName }}</td>
+              <td>{{ employee.fullName.lastName }}</td>
+              <td>{{ employee.username }}</td>
+              <td>{{ employee.birthDate }}</td>
+              
+              <td>{{ employee.address.houseNumber }}</td>
+              <td>{{ employee.address.street }}</td>
+              <td>{{ employee.address.city }}</td>
+              <td>{{ employee.address.zipCode }}</td>
+
+              <td>{{ employee.contactNumber }}</td>
+              <td>{{ employee.employmentStatus }}</td>
+              <td>
+                <span *ngFor="let role of employee.employeeRoles; let last = last">
+                  {{ role.role_title }}<span *ngIf="!last">, </span>
+                </span>
+              </td>
+              <td>{{ employee.createdAt }}</td>
+              <td>{{ employee.updatedAt }}</td>
+              <td>{{ employee.createdBy }}</td>
+              <td>{{ employee.updatedBy }}</td>
+            </tr>
+    </tbody>
+</table>
