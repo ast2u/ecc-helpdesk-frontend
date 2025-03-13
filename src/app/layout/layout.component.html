@@ -1,0 +1,56 @@
+<div class="wrapper">
+  <aside id="sidebar">
+    <div class="d-flex">
+      <button title="Toggle Menu" class="toggler-btn" type="button" (click)="toggle()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="sidebar-logo">
+        <a href="/">HelpDesk</a>
+      </div>
+    </div>
+    <ul class="sidebar-nav">
+      <li class="sidebar-header">Admin Tools</li>
+      <li class="sidebar-item">
+        <a routerLink="/employees" routerLinkActive="active" class="sidebar-link">
+          <i class="fas fa-user"></i>
+          <span>Employees</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="/" class="sidebar-link">
+          <i class="fas fa-user-tie"></i>
+          <span>Employee Roles</span>
+        </a>
+      </li>
+      <li class="sidebar-header">Manage, Create & View</li>
+      <li class="sidebar-item">
+        <a href="/" class="sidebar-link">
+          <i class="fas fa-ticket"></i>
+          <span>Tickets</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="/" class="sidebar-link">
+          <i class="fas fa-ticket-simple"></i>
+          <span>Assigned Tickets</span>
+        </a>
+      </li>
+      <li class="sidebar-header">Profile Management</li>
+      <li class="sidebar-item">
+        <a href="/" class="sidebar-link">
+          <i class="fas fa-address-card"></i>
+          <span>Edit Profile</span>
+        </a>
+      </li>
+    </ul>
+    <div class="sidebar-footer" *ngIf="isLoggedIn">
+      <a href="/login" title="Logout" class="sidebar-link" (click)="onLogout()">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+        </a>
+    </div>
+  </aside>
+  <div class="main p-3">
+    <router-outlet></router-outlet>
+  </div>
+</div>
