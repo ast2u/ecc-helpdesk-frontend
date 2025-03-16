@@ -1,0 +1,42 @@
+.table-wrapper {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+  }
+
+.hover-row{
+  position: relative;
+}
+
+thead th{
+    font-size: 1.1rem;
+    height: 50px;
+    background-color: rgb(221, 220, 220);
+}
+
+tbody td{
+    font-size: 1rem;
+    height: 54px;
+}
+
+.table th, .table td {
+    white-space: nowrap; /* Prevent text wrapping */
+  }
+.table-container {
+    max-height: 650px; /* Adjust height as needed */
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 1px solid #dee2e6; /* Optional border */
+}
+.action-column {
+  display: none;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.hover-row:hover .action-column {
+  background-color: transparent;
+  display: flex;
+}

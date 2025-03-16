@@ -1,5 +1,113 @@
 
-<table class="table">
+<div class="mb-3">
+  <div class="row g-2">
+    <div class="col-8">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" [(ngModel)]="searchRequest.name" (input)="onFilterChange()" id="searchInputName" placeholder="Search by name" aria-describedby="fullName">
+        <label for="searchInputName"><i class="fas fa-magnifying-glass me-2"></i><span>Search by name</span></label>
+      </div>
+    </div>
+    <div class="col-4">
+      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#searchFilter">
+        <i class="fas fa-filter"></i><span>Filter Search</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="searchFilter" tabindex="-1" aria-labelledby="searchFilterLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="searchFilterLabel">Search Filter</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="fullName">Name</span>
+              <input type="text" class="form-control" [(ngModel)]="searchRequest.name" (input)="onFilterChange()" placeholder="Search by name" aria-describedby="fullName">
+            </div>
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="employmentStatus">Employment Status</label>
+              <select class="form-select" id="employmentStatus" [(ngModel)]="searchRequest.status" (change)="onFilterChange()">
+                <option value="">All</option>
+                <option value="FULL_TIME">Full Time</option>
+                <option value="CONTRACT">Contract</option>
+                <option value="INTERN">Intern</option>
+                <option value="ON_LEAVE">On Leave</option>
+              </select>
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="houseNumber">House Number</span>
+              <input type="text" class="form-control" [(ngModel)]="searchRequest.houseNumber" (input)="onFilterChange()" placeholder="Search by House Number" aria-describedby="houseNumber">
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="street">Street</span>
+              <input type="text" class="form-control" [(ngModel)]="searchRequest.street" (input)="onFilterChange()" placeholder="Search by Street" aria-describedby="street">
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="city">City</span>
+              <input type="text" class="form-control" [(ngModel)]="searchRequest.city" (input)="onFilterChange()" placeholder="Search by City" aria-describedby="city">
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="zipCode">Zip Code</span>
+              <input type="text" class="form-control" [(ngModel)]="searchRequest.zipCode" (input)="onFilterChange()" placeholder="Search by Zip code" aria-describedby="zipCode">
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="createdBy">Created By</span>
+              <input type="text" class="form-control" [(ngModel)]="searchRequest.createdBy" (input)="onFilterChange()" placeholder="Search by creator name" aria-describedby="createdBy">
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="updatedBy">Updated By</span>
+              <input type="text" class="form-control" [(ngModel)]="searchRequest.updatedBy" (input)="onFilterChange()" placeholder="Search by updated by" aria-describedby="updatedBy">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Created Date/Time Range:</label>
+              <div class="d-flex align-items-center gap-2">
+                <span>Start</span>
+                  <input class="form-control w-auto" id="createdDate" type="datetime-local" [(ngModel)]="searchRequest.createdStart" (change)="onFilterChange()" placeholder="Start">
+                  <i class="fas fa-arrow-right"></i>
+                  <span>End</span>
+                  <input class="form-control w-auto" id="createdDate" type="datetime-local" [(ngModel)]="searchRequest.createdEnd" (change)="onFilterChange()" placeholder="End">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Updated Date/Time Range:</label>
+              <div class="d-flex align-items-center gap-2">
+                <span>Start</span>
+                  <input class="form-control w-auto" id="updatedDate" type="datetime-local" [(ngModel)]="searchRequest.updatedStart" (change)="onFilterChange()" placeholder="Start">
+                  <i class="fas fa-arrow-right"></i>
+                  <span>End</span>
+                  <input class="form-control w-auto" id="uodatedDate" type="datetime-local" [(ngModel)]="searchRequest.updatedEnd" (change)="onFilterChange()" placeholder="End">
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label class="input-group-text" for="employmentStatus">Roles</label>
+              <select class="form-select" id="employmentStatus" [(ngModel)]="searchRequest.roles" (change)="onFilterChange()">
+                <option value="">All</option>
+                <option value="ADMIN">Admin</option>
+                <option value="EMPLOYEE">Employee</option>
+              </select>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-container">
+  <table class="table table-hover" >
     <thead>
         <tr>
             <th>#</th>
@@ -24,8 +132,8 @@
     <tbody>
         <!-- Loop through the employeeList to generate table rows -->
         <tbody>
-            <tr *ngFor="let employee of employeeList; let i = index">
-              <td>{{ i + 1 }}</td>
+            <tr *ngFor="let employee of employeeList;" class="hover-row">
+              <td>{{ employee.id }}</td>
               <td>{{ employee.fullName.firstName }}</td>
               <td>{{ employee.fullName.middleName }}</td>
               <td>{{ employee.fullName.lastName }}</td>
@@ -44,10 +152,22 @@
                   {{ role.role_title }}<span *ngIf="!last">, </span>
                 </span>
               </td>
-              <td>{{ employee.createdAt }}</td>
-              <td>{{ employee.updatedAt }}</td>
+              <td>{{ employee.createdAt | date: 'short' }}</td>
+              <td>{{ employee.updatedAt | date: 'short'  }}</td>
               <td>{{ employee.createdBy }}</td>
               <td>{{ employee.updatedBy }}</td>
+              <td class="action-column">
+                <button title="Edit" class="btn btn-sm btn-primary me-1">
+                  <i class="fas fa-edit" ></i>
+                </button>
+                <button title="Delete" class="btn btn-sm btn-danger">
+                  <i class="fas fa-trash" ></i>
+                </button>
+              </td>
             </tr>
     </tbody>
 </table>
+</div>
+
+
+<app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)"></app-pagination>
