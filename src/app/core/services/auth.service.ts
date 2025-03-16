@@ -17,7 +17,7 @@ export class AuthService {
   login(username: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, { username, password }).pipe(
       tap(response => {
-        localStorage.setItem(this.tokenKey, response.token); // Store token
+        localStorage.setItem(this.tokenKey, response.token);
       }),
       catchError(error => {
         console.error('Login failed:', error);
