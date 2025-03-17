@@ -23,7 +23,7 @@ tbody td{
     white-space: nowrap; /* Prevent text wrapping */
   }
 .table-container {
-    max-height: 650px; /* Adjust height as needed */
+    max-height: 750px; /* Adjust height as needed */
     overflow-y: auto;
     overflow-x: auto;
     border: 1px solid #dee2e6; /* Optional border */
@@ -39,4 +39,9 @@ tbody td{
 .hover-row:hover .action-column {
   background-color: transparent;
   display: flex;
+}
+
+.header-form{
+  font-weight: 700;
+  font-size: 1.2rem;
 }
