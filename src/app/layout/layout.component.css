@@ -21,7 +21,7 @@ li {
     width: 70px;
     min-width: 70px;
     z-index: 1000;
-    background-color: greenyellow;
+    background-color: rgb(67, 204, 67);
     transition: all 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
