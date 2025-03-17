@@ -1,8 +1,8 @@
-<div class="pagination-container mt-4" *ngIf="totalPages > 1">
-    <button class="btn btn-success" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 0">Previous</button>
+<div class="pagination-container mt-3" *ngIf="totalPages > 1">
+    <button class="btn btn-success me-2" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 0">Previous</button>
   
     <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
   
-    <button class="btn btn-success" (click)="goToPage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1">Next</button>
+    <button class="btn btn-success ms-2" (click)="goToPage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1">Next</button>
   </div>
   
