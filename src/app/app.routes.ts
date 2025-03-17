@@ -5,6 +5,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { NoAuthGuard } from './core/guards/no-auth.guard';
 import { EmployeesComponent } from './features/employees/employees.component';
+import { TicketsComponent } from './features/tickets/tickets.component';
 
 
 export const routes: Routes = [
@@ -29,6 +30,11 @@ export const routes: Routes = [
             {
                 path: 'employees',
                 component: EmployeesComponent,
+                canActivate: [AuthGuard]
+            },
+            {
+                path: 'tickets',
+                component: TicketsComponent,
                 canActivate: [AuthGuard]
             }
         ]
