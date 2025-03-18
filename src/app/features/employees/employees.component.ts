@@ -8,12 +8,11 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
 import { Roles } from '../../shared/model/roles';
 import { RolesService } from '../roles/roles.service';
 import { EmployeeForm } from '../../shared/model/employee/employee-form';
-import { SearchFilterModalComponent } from './search-filter-modal/search-filter-modal.component';
 
 
 @Component({
   selector: 'app-employees',
-  imports: [FormsModule, CommonModule, PaginationComponent, DatePipe, ReactiveFormsModule, SearchFilterModalComponent],
+  imports: [FormsModule, CommonModule, PaginationComponent, DatePipe, ReactiveFormsModule],
   templateUrl: './employees.component.html',
   styleUrl: './employees.component.css'
 })
@@ -28,8 +27,6 @@ export class EmployeesComponent implements OnInit {
   employeeFormUpdate: FormGroup = new FormGroup({});
   pageSize = 10;
   searchRequest: EmployeeSearchRequest = {};
-
-  @ViewChild(SearchFilterModalComponent) searchFilterModal!: SearchFilterModalComponent;
 
   constructor(
     private fb: FormBuilder,
@@ -89,7 +86,6 @@ export class EmployeesComponent implements OnInit {
 
   onSaveUpdateEmployee(){
     if (this.employeeFormUpdate?.valid) {
-      debugger
       const formData = { ...this.employeeFormUpdate.value };
       formData.employeeRoles = formData.employeeRoles.map((roleId: number) => ({ id: roleId })); // Convert IDs to objects
   
@@ -106,7 +102,6 @@ export class EmployeesComponent implements OnInit {
       });
     }
   }
-
   
   loadRoles() {
     this.roleService.getRoles().subscribe({
@@ -139,6 +134,7 @@ export class EmployeesComponent implements OnInit {
 
   onCreateEmployee(){
     if (this.employeeFormAdd.valid) {
+      debugger
       const formData = { ...this.employeeFormAdd.value };
       formData.employeeRoles = formData.employeeRoles.map((roleId: number) => ({ id: roleId })); // Convert IDs to objects
 
@@ -200,20 +196,19 @@ export class EmployeesComponent implements OnInit {
     }
   }
 
-  onApplyFilters(searchRequest: EmployeeSearchRequest) {
-    this.searchRequest = searchRequest;
-    this.currentPage = 0;
-    this.getEmployees();
+  applyFilters() {
+    this.searchRequest = { ...this.searchRequest };
+    this.onFilterChange();
   }
 
-  onRemoveFilter(key: string) {
+  removeFilter(key: string) {
     (this.searchRequest as any)[key] = null;
-    this.getEmployees();
+    this.onFilterChange();
   }
 
-  onClearFilters() {
+  clearFilters() {
     this.searchRequest = {};
-    this.getEmployees();
+    this.onFilterChange();
   }
 
   hasActiveFilters(): boolean {
