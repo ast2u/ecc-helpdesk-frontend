@@ -1,0 +1,86 @@
+<!-- Applying filters modal -->
+<div class="modal fade" id="searchFilter" tabindex="-1" aria-labelledby="searchFilterLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="searchFilterLabel">Search Filters</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+          <div class="row">
+            <div class="col">
+              <div class="input-group mb-3">
+                <label class="input-group-text" for="roles">Roles</label>
+                <select class="form-select" id="roles" [(ngModel)]="searchRequest.roles">
+                  <option value="">All</option>
+                  <option value="ADMIN">Admin</option>
+                  <option value="EMPLOYEE">Employee</option>
+                </select>
+              </div>
+              <div class="input-group mb-3">
+                <label class="input-group-text" for="employmentStatus">Employment Status</label>
+                <select class="form-select" id="employmentStatus" [(ngModel)]="searchRequest.status" >
+                  <option value="">All</option>
+                  <option value="FULL_TIME">Full Time</option>
+                  <option value="CONTRACT">Contract</option>
+                  <option value="INTERN">Intern</option>
+                  <option value="ON_LEAVE">On Leave</option>
+                </select>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="houseNumber">House Number</span>
+                <input type="text" class="form-control" [(ngModel)]="searchRequest.houseNumber" placeholder="Search by House Number" aria-describedby="houseNumber">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="street">Street</span>
+                <input type="text" class="form-control" [(ngModel)]="searchRequest.street" placeholder="Search by Street" aria-describedby="street">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="city">City</span>
+                <input type="text" class="form-control" [(ngModel)]="searchRequest.city" placeholder="Search by City" aria-describedby="city">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="zipCode">Zip Code</span>
+                <input type="text" class="form-control" [(ngModel)]="searchRequest.zipCode" placeholder="Search by Zip code" aria-describedby="zipCode">
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="createdBy">Created By</span>
+                <input type="text" class="form-control" [(ngModel)]="searchRequest.createdBy" placeholder="Search by creator name" aria-describedby="createdBy">
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="updatedBy">Updated By</span>
+                <input type="text" class="form-control" [(ngModel)]="searchRequest.updatedBy" placeholder="Search by updated by" aria-describedby="updatedBy">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Created Date/Time Range:</label>
+                <div class="d-flex align-items-center gap-2">
+                  <span>Start</span>
+                    <input class="form-control w-auto" id="createdStart" type="datetime-local" [(ngModel)]="searchRequest.createdStart" placeholder="Start">
+                    <i class="fas fa-arrow-right"></i>
+                    <span>End</span>
+                    <input class="form-control w-auto" id="createdEnd" type="datetime-local" [(ngModel)]="searchRequest.createdEnd" placeholder="End">
+                </div>
+              </div>
+  
+              <div>
+                <label class="form-label">Updated Date/Time Range:</label>
+                <div class="d-flex align-items-center gap-2">
+                  <span>Start</span>
+                    <input class="form-control w-auto" id="updatedStart" type="datetime-local" [(ngModel)]="searchRequest.updatedStart" placeholder="Start">
+                    <i class="fas fa-arrow-right"></i>
+                    <span>End</span>
+                    <input class="form-control w-auto" id="updatedEnd" type="datetime-local" [(ngModel)]="searchRequest.updatedEnd"  placeholder="End">
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="applyFilters()" data-bs-dismiss="modal">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
