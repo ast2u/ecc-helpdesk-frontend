@@ -1,5 +1,5 @@
-import { Base } from "./base";
-import { Employees } from "./employee/employees";
+import { Base } from "../base";
+import { Employees } from "../employee/employees";
 
 export interface Tickets extends Base{
     ticketNumber: string,
