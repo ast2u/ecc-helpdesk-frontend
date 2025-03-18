@@ -37,12 +37,16 @@ export class EmployeesService {
     return this.http.post(this.apiUrl,employee)
   }
 
-  deleteEmployee(id:number): Observable<any>{
+  deleteEmployee(id:number): Observable<void>{
     return this.http.delete<void>(this.apiUrl+"/"+id)
   }
 
   updateEmployee(id:number , employee:any): Observable<any>{
-    return this.http.patch(this.apiUrl+"/"+id,employee)
+    return this.http.put(this.apiUrl+"/"+id,employee)
+  }
+
+  getEmployeeById(id : number): Observable<Employees>{
+    return this.http.get<Employees>(this.apiUrl+"/"+id)
   }
 
   updateActiveFilters(searchRequest: EmployeeSearchRequest): { key: string, label: string, value: string }[] {

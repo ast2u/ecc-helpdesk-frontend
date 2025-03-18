@@ -18,95 +18,11 @@
   </div>
 </div>
 
-
-
-
-
-<!-- Applying filters modal -->
-<div class="modal fade" id="searchFilter" tabindex="-1" aria-labelledby="searchFilterLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="searchFilterLabel">Search Filters</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col">
-            <div class="input-group mb-3">
-              <label class="input-group-text" for="roles">Roles</label>
-              <select class="form-select" id="roles" [(ngModel)]="searchRequest.roles">
-                <option value="">All</option>
-                <option value="ADMIN">Admin</option>
-                <option value="EMPLOYEE">Employee</option>
-              </select>
-            </div>
-            <div class="input-group mb-3">
-              <label class="input-group-text" for="employmentStatus">Employment Status</label>
-              <select class="form-select" id="employmentStatus" [(ngModel)]="searchRequest.status" >
-                <option value="">All</option>
-                <option value="FULL_TIME">Full Time</option>
-                <option value="CONTRACT">Contract</option>
-                <option value="INTERN">Intern</option>
-                <option value="ON_LEAVE">On Leave</option>
-              </select>
-            </div>
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="houseNumber">House Number</span>
-              <input type="text" class="form-control" [(ngModel)]="searchRequest.houseNumber" placeholder="Search by House Number" aria-describedby="houseNumber">
-            </div>
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="street">Street</span>
-              <input type="text" class="form-control" [(ngModel)]="searchRequest.street" placeholder="Search by Street" aria-describedby="street">
-            </div>
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="city">City</span>
-              <input type="text" class="form-control" [(ngModel)]="searchRequest.city" placeholder="Search by City" aria-describedby="city">
-            </div>
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="zipCode">Zip Code</span>
-              <input type="text" class="form-control" [(ngModel)]="searchRequest.zipCode" placeholder="Search by Zip code" aria-describedby="zipCode">
-            </div>
-          </div>
-          <div class="col">
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="createdBy">Created By</span>
-              <input type="text" class="form-control" [(ngModel)]="searchRequest.createdBy" placeholder="Search by creator name" aria-describedby="createdBy">
-            </div>
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="updatedBy">Updated By</span>
-              <input type="text" class="form-control" [(ngModel)]="searchRequest.updatedBy" placeholder="Search by updated by" aria-describedby="updatedBy">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Created Date/Time Range:</label>
-              <div class="d-flex align-items-center gap-2">
-                <span>Start</span>
-                  <input class="form-control w-auto" id="createdStart" type="datetime-local" [(ngModel)]="searchRequest.createdStart" placeholder="Start">
-                  <i class="fas fa-arrow-right"></i>
-                  <span>End</span>
-                  <input class="form-control w-auto" id="createdEnd" type="datetime-local" [(ngModel)]="searchRequest.createdEnd" placeholder="End">
-              </div>
-            </div>
-
-            <div>
-              <label class="form-label">Updated Date/Time Range:</label>
-              <div class="d-flex align-items-center gap-2">
-                <span>Start</span>
-                  <input class="form-control w-auto" id="updatedStart" type="datetime-local" [(ngModel)]="searchRequest.updatedStart" placeholder="Start">
-                  <i class="fas fa-arrow-right"></i>
-                  <span>End</span>
-                  <input class="form-control w-auto" id="updatedEnd" type="datetime-local" [(ngModel)]="searchRequest.updatedEnd"  placeholder="End">
-                </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="applyFilters()" data-bs-dismiss="modal">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+<app-search-filter-modal
+  (applyFiltersEvent)="onApplyFilters($event)"
+  (removeFilterEvent)="onRemoveFilter($event)"
+  (clearFiltersEvent)="onClearFilters()"
+></app-search-filter-modal>
 
 <!-- Add new Employee -->
 
@@ -118,7 +34,7 @@
       </select>
       <span class="ms-2">entries per page</span>
     </div>
-    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addEmployee">
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" (click)="addEmployeeButton()" data-bs-target="#addEmployee">
       <i class="fas fa-plus me-2"></i>
       <span>Add New Employee</span></button>
   </div>
@@ -131,7 +47,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form [formGroup]="employeeForm">
+          <form [formGroup]="employeeFormAdd">
           <div class="row">
             <div class="col">
               <div class="row mb-2" formGroupName="fullName">
@@ -227,10 +143,110 @@
     <span *ngFor="let filter of activeFilters; let i = index">
       <span class="badge bg-secondary me-2">
         {{ filter.label }}: {{ filter.value }}
-        <i class="fas fa-times cursor-pointer ms-1" (click)="removeFilter(filter.key)"></i>
+        <i class="fas fa-times cursor-pointer ms-1" (click)="onRemoveFilter(filter.key)"></i>
       </span>
     </span>
-    <button class="btn btn-sm btn-outline-danger ms-2" (click)="clearFilters()">Clear All</button>
+    <button class="btn btn-sm btn-outline-danger ms-2" (click)="onClearFilters()">Clear All</button>
+  </div>
+
+  <div class="modal fade" id="updateEmployee" tabindex="-1" aria-labelledby="updateEmployeeLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="updateEmployeeLabel">Update Employee</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="employeeFormUpdate">
+            <div class="row">
+              <div class="col">
+                <div class="row mb-2" formGroupName="fullName">
+                  <!-- <h5 class="header-form">Full name of the Employee</h5> -->
+                  <div class="col">
+                    <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="firstName" class="form-control" id="firstName" placeholder="First name">
+                  </div>
+                  <div class="col mb-2">
+                    <label for="middleName" class="form-label">Middle Name</label>
+                    <input type="text" formControlName="middleName" class="form-control" id="middleName" placeholder="Middle name">
+                  </div>
+                  <div>
+                    <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="lastName" class="form-control w-50" id="lastName" placeholder="Last name">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <label for="contactNumber" class="form-label">Contact Number <span class="text-danger">*</span></label>
+                    <input type="number" formControlName="contactNumber" class="form-control" id="contactNumber" placeholder="09123456789">
+                  </div>
+                  <div class="col">
+                    <label for="birthDate" class="form-label">Birth Date <span class="text-danger">*</span></label>
+                    <input type="date" formControlName="birthDate" class="form-control" id="birthDate" placeholder="Birth Date">
+                  </div>
+                </div>
+  
+              </div>
+              <div class="col">
+                <div formGroupName="address">
+                <div class="row mb-2">
+                  <div class="col">
+                    <label for="houseNumber" class="form-label">House Number <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="houseNumber" class="form-control" id="houseNumber" placeholder="123">
+                  </div>
+                  <div class="col">
+                    <label for="street" class="form-label">Street <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="street" class="form-control" id="street" placeholder="Street">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col">
+                    <label for="city" class="form-label">City <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="city" class="form-control" id="city" placeholder="City">
+                  </div>
+    
+                  <div class="col">
+                    <label for="zipCode" class="form-label">Zip Code <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="zipCode" class="form-control" id="zipCode" placeholder="Zip Code">
+                  </div>
+                </div>
+              </div>
+                <div class="mb-2">
+                  <label class="form-label" for="status">Employment Status</label>
+                  <select formControlName="employmentStatus" class="form-select w-50" id="status">
+                    <option selected value="FULL_TIME">Full Time</option>
+                    <option value="CONTRACT">Contract</option>
+                    <option value="INTERN">Intern</option>
+                    <option value="ON_LEAVE">On Leave</option>
+                  </select>
+                </div>
+                
+                <div formArrayName="employeeRoles">
+                <label class="form-label" for="employeeRoles">Employee Roles:</label>
+                <div class="form-check" *ngFor="let role of availableRoles">
+                  <input id="employeeRoles"
+                    type="checkbox" 
+                    class="form-check-input"
+                    [value]="role.id" 
+                    (change)="onRoleSelectionChange($event, role.id)" 
+                    [checked]="employeeRolesArray.value.includes(role.id)"
+                  />
+                  <label class="form-check-label" for="employeeRoles">
+                    {{ role.role_title }}
+                  </label>
+                </div>
+              </div>
+              </div>
+  
+            </div>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="onSaveUpdateEmployee()" data-bs-dismiss="modal">Save Changes</button>
+        </div>
+      </div>
+    </div>
   </div>
 
 <!-- Table Data -->
@@ -295,7 +311,7 @@
           <td>{{ employee.createdBy }}</td>
           <td>{{ employee.updatedBy }}</td>
           <td class="action-column">
-            <button title="Edit" class="btn btn-sm btn-primary me-1">
+            <button title="Edit" data-bs-toggle="modal" (click)="editEmployee(employee.id)" data-bs-target="#updateEmployee" class="btn btn-sm btn-primary me-1">
               <i class="fas fa-edit" ></i>
             </button>
             <button title="Delete" (click)="confirmDelete(employee.id)" class="btn btn-sm btn-danger">
@@ -304,7 +320,6 @@
           </td>
         </tr>
       }
-        
     </tbody>
 </table>
 </div>
