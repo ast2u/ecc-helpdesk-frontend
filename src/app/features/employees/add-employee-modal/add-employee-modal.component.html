@@ -1,0 +1,95 @@
+<div class="modal fade" id="addEmployee" tabindex="-1" aria-labelledby="addEmployeeLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="addEmployeeLabel">Add New Employee</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="employeeFormAdd">
+          <div class="row">
+            <div class="col">
+              <div class="row mb-2" formGroupName="fullName">
+                <!-- <h5 class="header-form">Full name of the Employee</h5> -->
+                <div class="col">
+                  <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
+                  <input type="text" formControlName="firstName" class="form-control" id="firstName" placeholder="First name">
+                </div>
+                <div class="col mb-2">
+                  <label for="middleName" class="form-label">Middle Name</label>
+                  <input type="text" formControlName="middleName" class="form-control" id="middleName" placeholder="Middle name">
+                </div>
+                <div>
+                  <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
+                  <input type="text" formControlName="lastName" class="form-control w-50" id="lastName" placeholder="Last name">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <label for="contactNumber" class="form-label">Contact Number <span class="text-danger">*</span></label>
+                  <input type="number" formControlName="contactNumber" class="form-control" id="contactNumber" placeholder="09123456789">
+                </div>
+                <div class="col">
+                  <label for="birthDate" class="form-label">Birth Date <span class="text-danger">*</span></label>
+                  <input type="date" formControlName="birthDate" class="form-control" id="birthDate" placeholder="Birth Date">
+                </div>
+              </div>
+
+            </div>
+            <div class="col">
+              <div formGroupName="address">
+              <div class="row mb-2">
+                <div class="col">
+                  <label for="houseNumber" class="form-label">House Number <span class="text-danger">*</span></label>
+                  <input type="text" formControlName="houseNumber" class="form-control" id="houseNumber" placeholder="123">
+                </div>
+                <div class="col">
+                  <label for="street" class="form-label">Street <span class="text-danger">*</span></label>
+                  <input type="text" formControlName="street" class="form-control" id="street" placeholder="Street">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col">
+                  <label for="city" class="form-label">City <span class="text-danger">*</span></label>
+                  <input type="text" formControlName="city" class="form-control" id="city" placeholder="City">
+                </div>
+  
+                <div class="col">
+                  <label for="zipCode" class="form-label">Zip Code <span class="text-danger">*</span></label>
+                  <input type="text" formControlName="zipCode" class="form-control" id="zipCode" placeholder="Zip Code">
+                </div>
+              </div>
+            </div>
+              <div class="mb-2">
+                <label class="form-label" for="status">Employment Status</label>
+                <select formControlName="employmentStatus" class="form-select w-50" id="status">
+                  <option selected value="FULL_TIME">Full Time</option>
+                  <option value="CONTRACT">Contract</option>
+                  <option value="INTERN">Intern</option>
+                  <option value="ON_LEAVE">On Leave</option>
+                </select>
+              </div>
+              <div formArrayName="employeeRoles">
+              <label class="form-label" for="employeeRoles">Employee Roles:</label>
+              <div class="form-check" *ngFor="let role of availableRoles">
+                <input id="employeeRoles"
+                  type="checkbox" 
+                  class="form-check-input"
+                  [value]="role.id" 
+                  (change)="onRoleSelectionChange($event, role.id)" 
+                />
+                <label class="form-check-label" for="employeeRoles">
+                  {{ role.role_title }}
+                </label>
+              </div>
+            </div>
+            </div>
+          </div>
+        </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="onCreateEmployee()" data-bs-dismiss="modal">Add Employee</button>
+        </div>
+      </div>
+    </div>
+  </div>
