@@ -39,6 +39,39 @@ export class TicketsService {
 
   updateTicketById(id:number, tickets: any) : Observable<Tickets>{
     return this.http.put<Tickets>(this.apiUrl + "/update/" + id, tickets)
-  } 
+  }
+  
+  updateFilters(searchRequest: TicketSearchRequest): { key: string, label: string, value: string }[] {
+      const activeFilters: { key: string, label: string, value: string }[] = [];
+      
+      if (searchRequest.desc) {
+        activeFilters.push({ key: 'desc', label: 'Description', value: searchRequest.desc });
+      }
+      if (searchRequest.status) {
+        activeFilters.push({ key: 'status', label: 'Ticket Status', value: searchRequest.status });
+      }
+      if (searchRequest.ticketNumber) {
+        activeFilters.push({ key: 'ticketNumber', label: 'Ticket Number', value: searchRequest.ticketNumber});
+      }
+      if (searchRequest.assignee) {
+        activeFilters.push({ key: 'assignee', label: 'Assignee', value: searchRequest.assignee });
+      }
+      if (searchRequest.createdBy) {
+        activeFilters.push({ key: 'createdBy', label: 'Created By', value: searchRequest.createdBy });
+      }
+      if (searchRequest.updatedBy) {
+        activeFilters.push({ key: 'updatedBy', label: 'Updated By', value: searchRequest.updatedBy });
+      }
+      if(searchRequest.createdStart || searchRequest.createdEnd){
+        let dateRange = `${searchRequest.createdStart}&${searchRequest.createdEnd}`;
+        activeFilters.push({ key: 'createdDateRange', label: 'Created Date', value: dateRange })
+      }
+      if(searchRequest.updatedStart || searchRequest.updatedEnd){
+        let dateRange = `${searchRequest.updatedStart}&${searchRequest.updatedEnd}`;
+        activeFilters.push({key: 'updatedDatedRange', label: 'Updated Date', value: dateRange})
+      }
+      
+      return activeFilters;
+    }
 
 }

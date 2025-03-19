@@ -31,7 +31,7 @@ export class TicketsComponent implements OnInit {
   }
 
   getTickets(){
-    this.activeFilters
+    this.activeFilters = this.ticketService.updateFilters(this.searchRequest);
     this.isLoading = true;
     this.ticketService.getUserTickets(this.searchRequest, this.currentPage, this.pageSize)
     .subscribe(response => {

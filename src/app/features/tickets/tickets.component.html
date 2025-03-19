@@ -1,12 +1,4 @@
-
-<ng-container *ngIf="isLoading; else ticketDetails">
-  <div class="spinner-border text-success d-flex justify-content-center" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-</ng-container>
-
-<ng-template #ticketDetails>
-  <ng-container *ngIf="ticketList.length > 0; else noTickets">
+<ng-container *ngIf="ticketList.length > 0 || activeFilters.length > 0">
     <div>
       <div class="row g-2">
         <div class="col-8">
@@ -36,27 +28,44 @@
       <span>Add New Ticket</span></button>
   </div>
 
-  <div class="list-group" *ngFor="let ticket of ticketList;">
-    <a [routerLink]="['/tickets', ticket.id]" class="list-group-item list-group-item-action mb-2" aria-current="true">
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">Ticket Number: {{ticket.ticketNumber}}</h5>
-        <small>{{ticket.createdAt | date: 'medium'}}</small>
-      </div>
-      <p class="mb-3">{{ticket.body}}</p>
-      <div class="d-flex">
-        <small class="me-auto">{{ticket.status}}</small>
-        <h6>{{ticket.updatedBy}}</h6>
-      </div>
-    </a>
+  <div *ngIf="hasActiveFilters()" class="applied-filters p-2 mb-2 border rounded">
+    <span class="fw-bold me-2">Filters Applied:</span>
+    <span *ngFor="let filter of activeFilters; let i = index">
+      <span class="badge bg-secondary me-2">
+        {{ filter.label }}: {{ filter.value }}
+        <i class="fas fa-times cursor-pointer ms-1" (click)="removeFilter(filter.key)"></i>
+      </span>
+    </span>
+    <button class="btn btn-sm btn-outline-danger ms-2" (click)="clearFilters()">Clear All</button>
   </div>
 
-  <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)"></app-pagination>
+  <ng-container *ngIf="isLoading">
+    <div class="spinner-border text-success d-flex justify-content-center" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
   </ng-container>
-</ng-template>
+  <ng-container *ngIf="!isLoading">
+    <div *ngFor="let ticket of ticketList" class="list-group">
+      <a [routerLink]="['/tickets', ticket.id]" class="list-group-item list-group-item-action mb-2" aria-current="true">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">Ticket Number: {{ticket.ticketNumber}}</h5>
+          <small>{{ticket.createdAt | date: 'medium'}}</small>
+        </div>
+        <p class="mb-3">{{ticket.body}}</p>
+        <div class="d-flex">
+          <small class="me-auto">{{ticket.status}}</small>
+          <h6>{{ticket.updatedBy}}</h6>
+        </div>
+      </a>
+    </div>
+  </ng-container>
+  <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)"></app-pagination>
+</ng-container>
 
-<ng-template #noTickets>
+
+<ng-container *ngIf="ticketList.length === 0">
   <h3 class="mb-3">You have not yet created any tickets.</h3>
   <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addEmployee">
     <i class="fas fa-plus me-2"></i>
     <span>Add New Ticket</span></button>
-</ng-template>
+</ng-container>

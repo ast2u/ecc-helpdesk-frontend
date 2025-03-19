@@ -1,7 +1,7 @@
 import { CommonModule, DatePipe, TitleCasePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Tickets } from '../../../shared/model/tickets/tickets';
 import { TicketsService } from '../tickets.service';
 
@@ -22,7 +22,7 @@ export class TicketDetailComponent implements OnInit{
     assignee: new FormControl(null)
   })
 
-  constructor(private route: ActivatedRoute, private ticketService: TicketsService){}
+  constructor(private route: ActivatedRoute, private ticketService: TicketsService, private router: Router){}
 
 
   ngOnInit(): void {
@@ -39,8 +39,19 @@ export class TicketDetailComponent implements OnInit{
         this.ticket = response;
       },
       error: (err) => {
-        console.error('Error fetching ticket details:', err);
+        if (err.status === 403) {
+          console.warn('Unauthorized access! Redirecting...');
+        } else if (err.status === 404) {
+          console.warn('Ticket not found! Redirecting...');
+        }
+
+        // Redirect to /tickets on 403 (unauthorized) or 404 (not found)
+        if (err.status === 403 || err.status === 404) {
+          this.router.navigate(['/tickets']);
+        }
       }
+
+      
       
     });
   }
