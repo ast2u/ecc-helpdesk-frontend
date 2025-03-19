@@ -53,8 +53,7 @@ li {
     font-weight: 800;
 }
 #sidebar .sidebar-logo,
-#sidebar a.sidebar-link span,
-#sidebar .sidebar-header {
+#sidebar a.sidebar-link span {
     opacity: 0;
     max-width: 0;
     overflow: hidden;
@@ -62,9 +61,12 @@ li {
     transition: opacity 0.3s ease-in-out, max-width 0.3s ease-in-out;
 }
 
+#sidebar:not(.expand) .sidebar-header {
+    display: none;
+}
+
 #sidebar.expand .sidebar-logo,
-#sidebar.expand a.sidebar-link span,
-#sidebar.expand .sidebar-header {
+#sidebar.expand a.sidebar-link span {
     opacity: 1;
     max-width: 200px; /* Adjust to match expanded width */
 }
@@ -104,9 +106,5 @@ a.sidebar-link:hover{
 
 .sidebar-items{
     position: relative;
-    
 }
-
-
-
 
