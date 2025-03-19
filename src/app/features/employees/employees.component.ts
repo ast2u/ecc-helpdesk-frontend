@@ -3,16 +3,17 @@ import { FormArray, FormControl, FormBuilder, FormGroup, FormsModule, ReactiveFo
 import { Employees } from '../../shared/model/employee/employees';
 import { CommonModule, DatePipe } from '@angular/common';
 import { EmployeesService } from './employees.service';
-import { EmployeeSearchRequest } from '../../shared/model/employee/employee-search-request';
+import { EmployeeSearchRequest } from '../../shared/model/searchrequest/employee-search-request';
 import { PaginationComponent } from '../../shared/components/pagination/pagination-component/pagination-component';
 import { Roles } from '../../shared/model/roles';
 import { RolesService } from '../roles/roles.service';
 import { EmployeeForm } from '../../shared/model/employee/employee-form';
+import { AddEmployeeModalComponent } from "./add-employee-modal/add-employee-modal.component";
 
 
 @Component({
   selector: 'app-employees',
-  imports: [FormsModule, CommonModule, PaginationComponent, DatePipe, ReactiveFormsModule],
+  imports: [FormsModule, CommonModule, PaginationComponent, DatePipe, ReactiveFormsModule, AddEmployeeModalComponent],
   templateUrl: './employees.component.html',
   styleUrl: './employees.component.css'
 })
@@ -39,6 +40,7 @@ export class EmployeesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEmployees();
+    this.loadRoles();
     const addModal = document.getElementById('addEmployee');
     const updateModal = document.getElementById('updateEmployee');
 
@@ -57,8 +59,7 @@ export class EmployeesComponent implements OnInit {
     
   editEmployee(employeeId: number){
     this.employeeFormUpdate.reset();
-    this.employeeRolesArray.clear();
-    this.loadRoles();
+    this.updateEmployeeRolesArray.clear();
     this.employeeService.getEmployeeById(employeeId).subscribe((employee)=>{
     this.employeeFormUpdate.patchValue({
       id: employee.id,
@@ -79,7 +80,7 @@ export class EmployeesComponent implements OnInit {
     });
 
     employee.employeeRoles.forEach((role: any) => {
-      this.employeeRolesArray.push(new FormControl(role.id)); // ✅ Select previous roles
+      this.updateEmployeeRolesArray.push(new FormControl(role.id)); // ✅ Select previous roles
     });
 });
   }
@@ -114,13 +115,17 @@ export class EmployeesComponent implements OnInit {
     });
   }
 
-  get employeeRolesArray() {
-    return (this.employeeFormUpdate ?? this.employeeFormAdd)?.get('employeeRoles') as FormArray;
+  get addEmployeeRolesArray() {
+    return this.employeeFormAdd.get('employeeRoles') as FormArray;
+  }
+
+  get updateEmployeeRolesArray() {
+    return this.employeeFormUpdate.get('employeeRoles') as FormArray;
   }
 
   onRoleSelectionChange(event: Event, roleId: number, isUpdate: boolean = false) {
     const isChecked = (event.target as HTMLInputElement).checked;
-    const employeeRolesArray = isUpdate ? this.employeeRolesArray : this.employeeRolesArray;
+    const employeeRolesArray = isUpdate ? this.updateEmployeeRolesArray : this.addEmployeeRolesArray;
   
     if (isChecked) {
       employeeRolesArray.push(new FormControl(roleId));
@@ -134,7 +139,6 @@ export class EmployeesComponent implements OnInit {
 
   onCreateEmployee(){
     if (this.employeeFormAdd.valid) {
-      debugger
       const formData = { ...this.employeeFormAdd.value };
       formData.employeeRoles = formData.employeeRoles.map((roleId: number) => ({ id: roleId })); // Convert IDs to objects
 
@@ -151,10 +155,6 @@ export class EmployeesComponent implements OnInit {
         }
       });
     }
-  }
-
-  addEmployeeButton(){
-    this.loadRoles();
   }
 
   getEmployees() {
@@ -189,10 +189,10 @@ export class EmployeesComponent implements OnInit {
   resetEmployeeForm(isUpdate: boolean = false) {
     if (isUpdate) {
       this.employeeFormUpdate?.reset();
-      this.employeeRolesArray.clear();
+      this.updateEmployeeRolesArray.clear();
     } else {
       this.employeeFormAdd?.reset();
-      this.employeeRolesArray.clear();
+      this.addEmployeeRolesArray.clear();
     }
   }
 
@@ -216,6 +216,7 @@ export class EmployeesComponent implements OnInit {
   }
 
   onFilterChange() {
+    this.currentPage = 0;
     this.getEmployees();
   }
   
