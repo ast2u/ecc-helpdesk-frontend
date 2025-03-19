@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Employees } from '../../shared/model/employee/employees';
 import {Observable } from 'rxjs';
-import { EmployeeSearchRequest } from '../../shared/model/employee/employee-search-request';
+import { EmployeeSearchRequest } from '../../shared/model/searchrequest/employee-search-request';
 
 @Injectable({
   providedIn: 'root'
