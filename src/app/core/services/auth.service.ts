@@ -60,7 +60,13 @@ export class AuthService {
     }
   }
 
-
+  isAdminUser(): boolean {
+    const token = localStorage.getItem(this.tokenKey);
+    if (!token) return false;
+  
+    const roles = this.getRolesFromToken(token);
+    return roles.includes('ADMIN'); // Adjust based on actual role names
+  }
 
 
   getUserRoles(): Observable<string[]> {

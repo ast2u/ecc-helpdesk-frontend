@@ -9,6 +9,7 @@
       </div>
     </div>
     <ul class="sidebar-nav">
+      <div *ngIf="isAdmin">
       <li class="sidebar-header">Admin Tools</li>
       <li class="sidebar-item">
         <a routerLink="/employees" routerLinkActive="active" class="sidebar-link">
@@ -22,6 +23,7 @@
           <span>Employee Roles</span>
         </a>
       </li>
+    </div>
       <li class="sidebar-header">Manage, Create & View</li>
       <li class="sidebar-item">
         <a routerLink="/tickets" routerLinkActive="active" class="sidebar-link">
