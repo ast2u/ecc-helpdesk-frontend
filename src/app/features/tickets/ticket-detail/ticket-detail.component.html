@@ -1,0 +1,79 @@
+<div class="card" *ngIf="ticket">
+  <div class="card-header">
+    <div class="d-flex">
+    <h4 class="me-auto">Ticket Number: {{ticket.ticketNumber}}</h4>
+    <p><strong>{{ ticket.createdAt | date: 'medium' }}</strong></p>
+  </div>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-8">
+    <h2>{{ ticket.title | titlecase }}</h2>
+    
+    <p><strong>Description:</strong> {{ ticket.body }}</p>
+  </div>
+  <div class="col-4">
+    <p><strong>Status:</strong> {{ ticket.status }}</p>
+    <p><strong>Updated By:</strong> {{ ticket.updatedBy }}</p>
+  </div>
+  </div>
+  </div>
+  <div class="card-footer text-body-secondary">
+    <button title="Edit" data-bs-toggle="modal" data-bs-target="#updateTicket" (click)="editTicket()" class="btn btn-sm btn-primary me-1">
+      <i class="fas fa-edit me-2" ></i>
+      <span>Edit</span>
+    </button>
+    <button title="Delete" class="btn btn-sm btn-danger">
+      <i class="fas fa-trash me-2" ></i>
+      <span>Delete</span>
+    </button>
+  </div>
+</div>
+
+<div class="modal fade" id="updateTicket" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Ticket</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="ticketFormUpdate">
+          <div class="row">
+            <div class="col">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" formControlName="title" id="inputTitle" placeholder="name@example.com">
+            <label for="inputTitle">Title</label>
+          </div>
+          <div class="form-floating mb-3">
+            <textarea class="form-control h-100" id="inputDesc" formControlName="body" placeholder="Description"></textarea>
+            <label for="inputDesc">Description</label>
+          </div>
+          
+        </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="ticketStatus">Ticket Status</label>
+              <select class="form-select" id="ticketStatus">
+                <option *ngFor="let size of ['DRAFT', 'FILED', 'IN_PROGRESS', 'CLOSE', 'DUPLICATE']" [value]="size">{{ size }}</option>
+              </select>
+            </div>
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="assignee">Assignee</label>
+              <select class="form-select" id="assignee">
+                <option *ngFor="let size of ['DRAFT', 'FILED', 'IN_PROGRESS', 'CLOSE', 'DUPLICATE']" [value]="size">{{ size }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p *ngIf="!ticket">Loading ticket details...</p>
