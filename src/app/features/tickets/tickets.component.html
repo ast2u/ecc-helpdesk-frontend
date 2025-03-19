@@ -1,19 +1,62 @@
-<div>
-    <div class="row g-2">
-      <div class="col-8">
-        <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="searchInputName" placeholder="Search by name" aria-describedby="fullName">
-          <label for="searchInputName"><i class="fas fa-magnifying-glass me-2"></i><span>Search by description</span></label>
+
+<ng-container *ngIf="isLoading; else ticketDetails">
+  <div class="spinner-border text-success d-flex justify-content-center" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</ng-container>
+
+<ng-template #ticketDetails>
+  <ng-container *ngIf="ticketList.length > 0; else noTickets">
+    <div>
+      <div class="row g-2">
+        <div class="col-8">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="searchInputDesc" (input)="onFilterChange()" [(ngModel)]="searchRequest.desc" placeholder="Search by description" aria-describedby="description">
+            <label for="searchInputDesc"><i class="fas fa-magnifying-glass me-2"></i><span>Search by description</span></label>
+          </div>
+        </div>
+        <div class="col-4">
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#searchFilter">
+            <i class="fas fa-filter me-2"></i><span>Filter Search</span>
+          </button>
         </div>
       </div>
-      <div class="col-4">
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#searchFilter">
-          <i class="fas fa-filter me-2"></i><span>Filter Search</span>
-        </button>
-      </div>
-    </div>
-</div>
+  </div>
 
-<div class="list-group">
-    
-</div>
+  <div class="d-flex mb-3">
+    <div class="me-auto">
+      <label for="entriesPerPage" class="me-2">Show</label>
+      <select id="entriesPerPage" class="form-select d-inline-block w-auto" [(ngModel)]="pageSize" (change)="onEntriesChange()">
+        <option *ngFor="let size of [5, 10, 20]" [value]="size">{{ size }}</option>
+      </select>
+      <span class="ms-2">entries per page</span>
+    </div>
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addEmployee">
+      <i class="fas fa-plus me-2"></i>
+      <span>Add New Ticket</span></button>
+  </div>
+
+  <div class="list-group" *ngFor="let ticket of ticketList;">
+    <a [routerLink]="['/tickets', ticket.id]" class="list-group-item list-group-item-action mb-2" aria-current="true">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">Ticket Number: {{ticket.ticketNumber}}</h5>
+        <small>{{ticket.createdAt | date: 'medium'}}</small>
+      </div>
+      <p class="mb-3">{{ticket.body}}</p>
+      <div class="d-flex">
+        <small class="me-auto">{{ticket.status}}</small>
+        <h6>{{ticket.updatedBy}}</h6>
+      </div>
+    </a>
+  </div>
+
+  <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)"></app-pagination>
+  </ng-container>
+</ng-template>
+
+<ng-template #noTickets>
+  <h3 class="mb-3">You have not yet created any tickets.</h3>
+  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addEmployee">
+    <i class="fas fa-plus me-2"></i>
+    <span>Add New Ticket</span></button>
+</ng-template>
