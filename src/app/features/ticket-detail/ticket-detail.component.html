@@ -1,0 +1,113 @@
+<div class="card mb-2" *ngIf="ticket">
+  <div class="card-header">
+    <div class="d-flex">
+      <h4 class="me-auto">Ticket Number: {{ ticket.ticketNumber }}</h4>
+      <p><strong>{{ ticket.createdAt | date: 'medium' }}</strong></p>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="ticketFormUpdate">
+      <div class="row">
+        <div class="col-8">
+          <h2 *ngIf="!isEditing">{{ ticket.title | titlecase }}</h2>
+          <div class="form-floating mb-3" *ngIf="isEditing">
+            <input type="text" class="form-control" formControlName="title" id="inputTitle" placeholder="Title of the ticket">
+            <label for="inputTitle">Title</label>
+          </div>
+          <div *ngIf="!isEditing">
+            <label for="descriptionDetail"><strong>Description:</strong></label>
+            <p id="descriptionDetail" style="white-space: pre-line;">{{ ticket.body }}</p>
+          </div>
+          <div class="form-floating" *ngIf="isEditing">
+            <textarea class="form-control body-textarea" id="inputDesc" formControlName="body" placeholder="Description"></textarea>
+            <label for="inputDesc">Description</label>
+          </div>
+          <div class="image-container" *ngIf="!isEditing">
+            <label for="imageDetails">
+              <i class="fas fa-images me-2"></i>Images
+            </label>
+            <div class="imageDetails mt-3">
+            <img src="imagenotfound.jpg" alt="Example Image" class="rounded" id="imageDetail">
+          </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <p *ngIf="!isEditing"><strong>Status: </strong>
+            <span class="me-auto badge" [ngClass]="getBadge(ticket.status)">
+              {{ ticket.status }}
+            </span>
+          </p>
+          <label *ngIf="isEditing" class="mb-1" for="statusDetail"><strong>Status:</strong></label>
+            <select id="statusDetail" *ngIf="isEditing" class="form-select mb-3" formControlName="status">
+              <option *ngFor="let status of ['DRAFT', 'FILED', 'IN_PROGRESS', 'CLOSED', 'DUPLICATE']" [value]="status">
+                {{ status }}
+              </option>
+            </select>
+
+            <p *ngIf="!isEditing"><strong>Assignee: </strong>
+              <span *ngIf="ticket.assignee; else noAssignee">
+                <a *ngIf="isAdmin" href="#" title="Assign a Employee" (click)="isAssigning = true; $event.preventDefault()" class="clickableUsername">
+                  {{ ticket.assignee.username }}
+                </a>
+                <span *ngIf="!isAdmin">{{ ticket.assignee.username }}</span>
+              </span>
+            </p>
+
+            <!-- "Assign an Employee" button (if no assignee) -->
+            <ng-template #noAssignee>
+              <button *ngIf="isAdmin && !isAssigning" (click)="isAssigning = true" class="btn btn-sm btn-primary">
+                Assign an Employee
+              </button>
+            </ng-template>
+
+            <!-- Show dropdown and save button when assigning -->
+            <div *ngIf="isAssigning && isAdmin" class="d-flex align-items-center mt-2">
+              <select id="assigneeDetail" class="form-select me-2" formControlName="assignee">
+                <option *ngFor="let employee of availableEmployees" [value]="employee.id">
+                  {{ employee.username }}
+                </option>
+              </select>
+              <button class="btn btn-sm btn-success me-1" (click)="assignToTicket(ticketFormUpdate.value.assignee)">
+                <i class="fas fa-save me-2"></i>
+                <span>Save Changes</span>
+              </button>
+              <button class="btn btn-sm btn-secondary" (click)="isAssigning = false">
+                <i class="fas fa-times me-2"></i>
+                <span>Cancel</span>
+              </button>
+            </div>
+
+            <p *ngIf="!isEditing"><strong>Created By:</strong> {{ ticket.createdBy }}</p>
+          <p *ngIf="!isEditing"><strong>Updated By:</strong> {{ ticket.updatedBy }}</p>
+          <p *ngIf="!isEditing"><strong>Updated At:</strong> {{ ticket.updatedAt | date: 'short' }}</p>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="card-footer">
+    <button *ngIf="!isEditing" class="btn btn-sm btn-primary me-1" (click)="editTicket()">
+      <i class="fas fa-edit me-2"></i>
+      <span>Edit</span>
+    </button>
+    <button *ngIf="isEditing" class="btn btn-sm btn-success me-1" (click)="onUpdateTicket()">
+      <i class="fas fa-save me-2"></i>
+      <span>Save Changes</span>
+    </button>
+    <button *ngIf="isEditing" class="btn btn-sm btn-secondary me-1" (click)="cancelEdit()">
+      <i class="fas fa-times me-2"></i>
+      <span>Cancel</span>
+    </button>
+    <button *ngIf="!isEditing && isAdmin" title="Delete" (click)="onConfirmDelete(ticket.id)" class="btn btn-sm btn-danger">
+      <i class="fas fa-trash me-2"></i>
+      <span>Delete</span>
+    </button>
+  </div>
+</div>
+
+<div class="card" *ngIf="ticket">
+  <div class="card-body">
+    remarks
+  </div>
+</div>
+
+<p *ngIf="!ticket">Loading ticket details...</p>

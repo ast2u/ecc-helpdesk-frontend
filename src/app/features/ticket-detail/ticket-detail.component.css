@@ -1,0 +1,14 @@
+.body-textarea{
+    height: auto;
+    min-height: 100px;
+}
+.image-container{
+    margin-top: 5rem;
+}
+#imageDetail{
+    max-width:200px
+}
+.clickableUsername{
+    text-decoration: none;
+    
+}
