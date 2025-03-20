@@ -6,7 +6,9 @@ import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { NoAuthGuard } from './core/guards/no-auth.guard';
 import { EmployeesComponent } from './features/employees/employees.component';
 import { TicketsComponent } from './features/tickets/tickets.component';
-import { TicketDetailComponent } from './features/tickets/ticket-detail/ticket-detail.component';
+import { TicketDetailComponent } from './features/ticket-detail/ticket-detail.component';
+import { EmployeeProfileComponent } from './features/employee-profile/employee-profile.component';
+import { RolesComponent } from './features/roles/roles.component';
 
 
 export const routes: Routes = [
@@ -34,6 +36,11 @@ export const routes: Routes = [
                 canActivate: [AuthGuard]
             },
             {
+                path: 'roles',
+                component: RolesComponent,
+                canActivate: [AuthGuard]
+            },
+            {
                 path: 'tickets',
                 component: TicketsComponent,
                 canActivate: [AuthGuard]
@@ -41,6 +48,11 @@ export const routes: Routes = [
             {
                 path: 'tickets/:id',
                 component: TicketDetailComponent,
+                canActivate: [AuthGuard]
+            },
+            {
+                path: 'profile',
+                component: EmployeeProfileComponent,
                 canActivate: [AuthGuard]
             }
         ]
