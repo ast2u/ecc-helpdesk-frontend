@@ -15,7 +15,12 @@ export class TicketsService {
   getUserTickets(searchRequest: TicketSearchRequest, page = 0, size = 0): Observable<{ content: Tickets[], page: any }> {
       const params = this.buildParams(searchRequest, page, size);
       return this.http.get<{ content: Tickets[], page: any }>(this.apiUrlUser, { params });
-    }
+  }
+
+  getAllTickets(searchRequest: TicketSearchRequest, page = 0, size = 0): Observable<{ content: Tickets[], page: any }> {
+    const params = this.buildParams(searchRequest, page, size);
+    return this.http.get<{ content: Tickets[], page: any }>(this.apiUrl, { params });
+  }
   
   private buildParams(searchRequest: TicketSearchRequest, page: number, size: number): HttpParams {
     let params = new HttpParams().set('page', page).set('size', size);
@@ -33,12 +38,35 @@ export class TicketsService {
     return params;
   }
 
+  createTicket(ticket:any): Observable<any>{
+    return this.http.post(`${this.apiUrl}/create`,ticket)
+  }
+
   getTicketById(id : number) : Observable<Tickets>{
-    return this.http.get<Tickets>(this.apiUrl + "/" + id)
+    return this.http.get<Tickets>(`${this.apiUrl}/${id}`);
   }
 
   updateTicketById(id:number, tickets: any) : Observable<Tickets>{
-    return this.http.put<Tickets>(this.apiUrl + "/update/" + id, tickets)
+    return this.http.put<Tickets>(`${this.apiUrl}/update/${id}`, tickets);
+  }
+
+  assignTicketById(id:number, employeeId: number) : Observable<Tickets>{
+    return this.http.put<Tickets>(`${this.apiUrl}/assign/${id}/${employeeId}`, null);
+  }
+
+  deleteTicketById(id:number) : Observable<void>{
+    return this.http.delete<void>(`${this.apiUrl}/${id}`)
+  }
+
+  getBadgeClass(status: string): string {
+    switch (status) {
+      case 'DRAFT': return 'bg-secondary'; // Gray
+      case 'FILED': return 'bg-primary'; // Blue
+      case 'IN_PROGRESS': return 'bg-warning text-dark'; // Yellow
+      case 'CLOSED': return 'bg-dark'; // Green
+      case 'DUPLICATE': return 'bg-danger'; // Red
+      default: return 'bg-dark'; // Default (Black)
+    }
   }
   
   updateFilters(searchRequest: TicketSearchRequest): { key: string, label: string, value: string }[] {
