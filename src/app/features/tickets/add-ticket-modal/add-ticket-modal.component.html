@@ -1,0 +1,22 @@
+<div class="modal fade" id="addEmployee" tabindex="-1" aria-labelledby="addEmployeeLabel">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="addEmployeeLabel">Add New Ticket</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="ticketFormAdd">
+                <label for="ticketTitle" class="form-label">Title <span class="text-danger">*</span></label>
+                <input type="text" formControlName="title" class="form-control mb-4" id="ticketTitle" placeholder="Title">
+                <label for="ticketBody" class="form-label">Body <span class="text-danger">*</span></label>
+                <textarea formControlName="body" class="form-control" id="ticketBody" placeholder="Body of Ticket">
+                </textarea>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="onCreateTicket()" data-bs-dismiss="modal">Create Ticket</button>
+        </div>
+      </div>
+    </div>
+  </div>
