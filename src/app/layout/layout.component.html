@@ -5,7 +5,7 @@
         <i class="fas fa-bars"></i>
       </button>
       <div class="sidebar-logo">
-        <a href="/">HelpDesk</a>
+        <a routerLink="/dashboard" routerLinkActive="active">HelpDesk</a>
       </div>
     </div>
     <ul class="sidebar-nav">
@@ -18,32 +18,34 @@
         </a>
       </li>
       <li class="sidebar-item">
-        <a href="/" class="sidebar-link">
+        <a routerLink="/roles" routerLinkActive="active" class="sidebar-link">
           <i class="fas fa-user-tie"></i>
           <span>Employee Roles</span>
         </a>
       </li>
+      <li class="sidebar-item">
+        <a routerLink="/tickets" routerLinkActive="active" class="sidebar-link">
+          <i class="fas fa-ticket-simple"></i>
+          <span>All Tickets</span>
+        </a>
+      </li>
     </div>
-      <li class="sidebar-header">Manage, Create & View</li>
+    <div *ngIf="!isAdmin">
+      <li class="sidebar-header">Manage Tickets</li>
       <li class="sidebar-item">
         <a routerLink="/tickets" routerLinkActive="active" class="sidebar-link">
           <i class="fas fa-ticket"></i>
           <span>Tickets</span>
         </a>
       </li>
-      <li class="sidebar-item">
-        <a href="/" class="sidebar-link">
-          <i class="fas fa-ticket-simple"></i>
-          <span>Assigned Tickets</span>
-        </a>
-      </li>
       <li class="sidebar-header">Profile Management</li>
       <li class="sidebar-item">
-        <a href="/" class="sidebar-link">
+        <a routerLink="/profile" routerLinkActive="active" class="sidebar-link">
           <i class="fas fa-address-card"></i>
           <span>Profile</span>
         </a>
       </li>
+    </div>
     </ul>
     <div class="sidebar-footer" *ngIf="isLoggedIn">
       <a href="/login" title="Logout" class="sidebar-link" (click)="onLogout()">
