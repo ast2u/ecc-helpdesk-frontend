@@ -17,6 +17,10 @@ export class EmployeesService {
     return this.http.get<{ content: Employees[], page: any }>(this.apiUrl, { params });
   }
 
+  getAllEmployeeRaw(): Observable<{content: Employees[]}>{
+    return this.http.get<{content: Employees[]}>(this.apiUrl)
+  }
+
   private buildParams(searchRequest: EmployeeSearchRequest, page: number, size: number): HttpParams {
     let params = new HttpParams().set('page', page).set('size', size);
 
