@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TicketSearchRequest } from '../../shared/model/searchrequest/ticket-search-request';
-import { TicketsService } from './tickets.service';
+import { TicketsService } from '../../shared/services/tickets.service';
 import { Tickets } from '../../shared/model/tickets/tickets';
-import { EmployeesService } from '../employees/employees.service';
+import { EmployeesService } from '../../shared/services/employees.service';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../shared/components/pagination/pagination-component/pagination-component';
 import { CommonModule, DatePipe, TitleCasePipe } from '@angular/common';

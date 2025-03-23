@@ -1,8 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { TicketSearchRequest } from '../../shared/model/searchrequest/ticket-search-request';
+import { TicketSearchRequest } from '../model/searchrequest/ticket-search-request';
 import { Observable } from 'rxjs';
-import { Tickets } from '../../shared/model/tickets/tickets';
+import { Tickets } from '../model/tickets/tickets';
+import { Remarks } from '../model/tickets/remarks';
 
 @Injectable({
   providedIn: 'root'
@@ -38,15 +39,15 @@ export class TicketsService {
     return params;
   }
 
-  createTicket(ticket:any): Observable<any>{
-    return this.http.post(`${this.apiUrl}/create`,ticket)
+  createTicket(ticket:Tickets): Observable<Tickets>{
+    return this.http.post<Tickets>(`${this.apiUrl}/create`,ticket)
   }
 
   getTicketById(id : number) : Observable<Tickets>{
     return this.http.get<Tickets>(`${this.apiUrl}/${id}`);
   }
 
-  updateTicketById(id:number, tickets: any) : Observable<Tickets>{
+  updateTicketById(id:number, tickets: Tickets) : Observable<Tickets>{
     return this.http.put<Tickets>(`${this.apiUrl}/update/${id}`, tickets);
   }
 
@@ -55,17 +56,21 @@ export class TicketsService {
   }
 
   deleteTicketById(id:number) : Observable<void>{
-    return this.http.delete<void>(`${this.apiUrl}/${id}`)
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  addRemarksInTicket(ticketId:number, remarks: Remarks): Observable<Remarks>{
+    return this.http.post<Remarks>(`${this.apiUrl}/${ticketId}/remarks/add`, remarks);
   }
 
   getBadgeClass(status: string): string {
     switch (status) {
-      case 'DRAFT': return 'bg-secondary'; // Gray
-      case 'FILED': return 'bg-primary'; // Blue
-      case 'IN_PROGRESS': return 'bg-warning text-dark'; // Yellow
-      case 'CLOSED': return 'bg-dark'; // Green
-      case 'DUPLICATE': return 'bg-danger'; // Red
-      default: return 'bg-dark'; // Default (Black)
+      case 'DRAFT': return 'bg-secondary';
+      case 'FILED': return 'bg-primary';
+      case 'IN_PROGRESS': return 'bg-warning text-dark';
+      case 'CLOSED': return 'bg-dark';
+      case 'DUPLICATE': return 'bg-danger';
+      default: return 'bg-dark';
     }
   }
   

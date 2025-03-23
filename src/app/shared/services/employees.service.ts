@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Employees } from '../../shared/model/employee/employees';
+import { Employees } from '../model/employee/employees';
 import {Observable } from 'rxjs';
-import { EmployeeSearchRequest } from '../../shared/model/searchrequest/employee-search-request';
+import { EmployeeSearchRequest } from '../model/searchrequest/employee-search-request';
 
 @Injectable({
   providedIn: 'root'
@@ -45,8 +45,8 @@ export class EmployeesService {
     return this.http.delete<void>(this.apiUrl+"/"+id)
   }
 
-  updateEmployee(id:number , employee:any): Observable<any>{
-    return this.http.put(this.apiUrl+"/"+id,employee)
+  updateEmployee(id:number , employee: Employees): Observable<Employees>{
+    return this.http.put<Employees>(`${this.apiUrl}/${id}`,employee)
   }
 
   getEmployeeById(id : number): Observable<Employees>{

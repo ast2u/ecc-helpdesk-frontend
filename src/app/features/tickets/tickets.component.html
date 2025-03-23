@@ -23,7 +23,7 @@
       </select>
       <span class="ms-2">entries per page</span>
     </div>
-    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addEmployee">
+    <button *ngIf="!isAdmin" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addEmployee">
       <i class="fas fa-plus me-2"></i>
       <span>Add New Ticket</span></button>
   </div>
@@ -64,7 +64,6 @@
   </ng-container>
   <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" (pageChange)="onPageChange($event)"></app-pagination>
 </ng-container>
-
 
 <ng-container *ngIf="ticketList.length === 0">
   <h3 class="mb-3">You have not yet created any tickets.</h3>
