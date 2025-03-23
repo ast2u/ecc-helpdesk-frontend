@@ -1,14 +1,14 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Employees } from '../../shared/model/employee/employees';
 import { CommonModule, DatePipe } from '@angular/common';
-import { EmployeesService } from './employees.service';
+import { EmployeesService } from '../../shared/services/employees.service';
 import { EmployeeSearchRequest } from '../../shared/model/searchrequest/employee-search-request';
 import { PaginationComponent } from '../../shared/components/pagination/pagination-component/pagination-component';
 import { Roles } from '../../shared/model/roles';
-import { RolesService } from '../roles/roles.service';
 import { EmployeeForm } from '../../shared/model/employee/employee-form';
 import { AddEmployeeModalComponent } from "./add-employee-modal/add-employee-modal.component";
+import { RolesService } from '../../shared/services/roles.service';
 
 
 @Component({
@@ -40,7 +40,6 @@ export class EmployeesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEmployees();
-    this.loadRoles();
     const addModal = document.getElementById('addEmployee');
     const updateModal = document.getElementById('updateEmployee');
 
@@ -58,6 +57,7 @@ export class EmployeesComponent implements OnInit {
   }
     
   editEmployee(employeeId: number){
+    this.loadRoles();
     this.employeeFormUpdate.reset();
     this.updateEmployeeRolesArray.clear();
     this.employeeService.getEmployeeById(employeeId).subscribe((employee)=>{
@@ -194,6 +194,10 @@ export class EmployeesComponent implements OnInit {
       this.employeeFormAdd?.reset();
       this.addEmployeeRolesArray.clear();
     }
+  }
+
+  onFetchRoles(){
+    this.loadRoles()
   }
 
   applyFilters() {

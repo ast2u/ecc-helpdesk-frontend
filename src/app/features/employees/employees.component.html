@@ -112,7 +112,7 @@
       </select>
       <span class="ms-2">entries per page</span>
     </div>
-    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addEmployee">
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" (click)="onFetchRoles()" data-bs-target="#addEmployee">
       <i class="fas fa-plus me-2"></i>
       <span>Add New Employee</span></button>
   </div>
@@ -151,26 +151,26 @@
                 <div class="row mb-2" formGroupName="fullName">
                   <!-- <h5 class="header-form">Full name of the Employee</h5> -->
                   <div class="col">
-                    <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
-                    <input type="text" formControlName="firstName" class="form-control" id="firstName" placeholder="First name">
+                    <label for="update_firstName" class="form-label">First Name <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="firstName" class="form-control" id="update_firstName" placeholder="First name">
                   </div>
                   <div class="col mb-2">
-                    <label for="middleName" class="form-label">Middle Name</label>
-                    <input type="text" formControlName="middleName" class="form-control" id="middleName" placeholder="Middle name">
+                    <label for="update_middleName" class="form-label">Middle Name</label>
+                    <input type="text" formControlName="middleName" class="form-control" id="update_middleName" placeholder="Middle name">
                   </div>
                   <div>
-                    <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
-                    <input type="text" formControlName="lastName" class="form-control w-50" id="lastName" placeholder="Last name">
+                    <label for="update_lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="lastName" class="form-control w-50" id="update_lastName" placeholder="Last name">
                   </div>
                 </div>
                 <div class="row">
                   <div class="col">
-                    <label for="contactNumber" class="form-label">Contact Number <span class="text-danger">*</span></label>
-                    <input type="number" formControlName="contactNumber" class="form-control" id="contactNumber" placeholder="09123456789">
+                    <label for="update_contactNumber" class="form-label">Contact Number <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="contactNumber" class="form-control" id="update_contactNumber" placeholder="09123456789">
                   </div>
                   <div class="col">
-                    <label for="birthDate" class="form-label">Birth Date <span class="text-danger">*</span></label>
-                    <input type="date" formControlName="birthDate" class="form-control" id="birthDate" placeholder="Birth Date">
+                    <label for="update_birthDate" class="form-label">Birth Date <span class="text-danger">*</span></label>
+                    <input type="date" formControlName="birthDate" class="form-control" id="update_birthDate" placeholder="Birth Date">
                   </div>
                 </div>
   
@@ -179,29 +179,29 @@
                 <div formGroupName="address">
                 <div class="row mb-2">
                   <div class="col">
-                    <label for="houseNumber" class="form-label">House Number <span class="text-danger">*</span></label>
-                    <input type="text" formControlName="houseNumber" class="form-control" id="houseNumber" placeholder="123">
+                    <label for="update_houseNumber" class="form-label">House Number <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="houseNumber" class="form-control" id="update_houseNumber" placeholder="123">
                   </div>
                   <div class="col">
-                    <label for="street" class="form-label">Street <span class="text-danger">*</span></label>
-                    <input type="text" formControlName="street" class="form-control" id="street" placeholder="Street">
+                    <label for="update_street" class="form-label">Street <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="street" class="form-control" id="update_street" placeholder="Street">
                   </div>
                 </div>
                 <div class="row mb-3">
                   <div class="col">
-                    <label for="city" class="form-label">City <span class="text-danger">*</span></label>
-                    <input type="text" formControlName="city" class="form-control" id="city" placeholder="City">
+                    <label for="update_city" class="form-label">City <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="city" class="form-control" id="update_city" placeholder="City">
                   </div>
     
                   <div class="col">
-                    <label for="zipCode" class="form-label">Zip Code <span class="text-danger">*</span></label>
-                    <input type="text" formControlName="zipCode" class="form-control" id="zipCode" placeholder="Zip Code">
+                    <label for="update_zipCode" class="form-label">Zip Code <span class="text-danger">*</span></label>
+                    <input type="text" formControlName="zipCode" class="form-control" id="update_zipCode" placeholder="Zip Code">
                   </div>
                 </div>
               </div>
                 <div class="mb-2">
-                  <label class="form-label" for="status">Employment Status</label>
-                  <select formControlName="employmentStatus" class="form-select w-50" id="status">
+                  <label class="form-label" for="update_status">Employment Status</label>
+                  <select formControlName="employmentStatus" class="form-select w-50" id="update_status">
                     <option selected value="FULL_TIME">Full Time</option>
                     <option value="CONTRACT">Contract</option>
                     <option value="INTERN">Intern</option>
@@ -210,9 +210,9 @@
                 </div>
                 
                 <div formArrayName="employeeRoles">
-                <label class="form-label" for="employeeRoles">Employee Roles:</label>
+                <label class="form-label" for="update_employeeRoles">Employee Roles:</label>
                 <div class="form-check" *ngFor="let role of availableRoles">
-                  <input id="employeeRoles"
+                  <input id="update_employeeRoles"
                     type="checkbox" 
                     class="form-check-input"
                     [value]="role.id" 
