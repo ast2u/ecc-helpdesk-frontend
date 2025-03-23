@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Tickets } from '../../shared/model/tickets/tickets';
-import { TicketsService } from '../tickets/tickets.service';
-import { EmployeesService } from '../employees/employees.service';
+import { TicketsService } from '../../shared/services/tickets.service';
+import { EmployeesService } from '../../shared/services/employees.service';
 import { Employees } from '../../shared/model/employee/employees';
 import { AuthService } from '../../core/services/auth.service';
 
@@ -28,6 +28,9 @@ export class TicketDetailComponent implements OnInit{
     status: new FormControl(""),
     assignee: new FormControl(null)
   })
+  remarksForm: FormGroup = new FormGroup({
+    comment: new FormControl("")
+  })
 
   constructor(private route: ActivatedRoute, 
     private ticketService: TicketsService, 
@@ -38,11 +41,9 @@ export class TicketDetailComponent implements OnInit{
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    this.ticketId = id ? +id : 0; // Convert to number and handle null case
+    this.ticketId = id ? + id : 0; // Convert to number and handle null case
     this.isAdmin = this.authService.isAdminUser();
     this.getTicketDetails();
-    this.loadEmployee();
-    console.log('Ticket ID:', this.ticketId);
   }
 
   loadEmployee() {
@@ -56,6 +57,11 @@ export class TicketDetailComponent implements OnInit{
         }
       });
     }
+  }
+
+  onAssignEmployeeClick(){
+    this.isAssigning = true;
+    this.loadEmployee();
   }
 
   getTicketDetails(){
@@ -157,6 +163,31 @@ export class TicketDetailComponent implements OnInit{
       }
     })
     
+  }
+
+  onEnterAddRemarks(event: Event, ticketId: number) {
+    const keyboardEvent = event as KeyboardEvent;
+    keyboardEvent.preventDefault();
+    this.onSubmitAddRemark(ticketId);
+  }
+  
+
+  onSubmitAddRemark(ticketId:number){
+    if(this.remarksForm.valid){
+      debugger
+      const formData = {...this.remarksForm.value}
+      this.ticketService.addRemarksInTicket(ticketId,formData).subscribe({
+        next: (response) => {
+          console.log('Remark created:', response);
+          this.remarksForm.reset();
+          this.getTicketDetails();
+        },
+        error: (err) => {
+          console.error('Error creating remark:', err);
+          alert('Failed to create a remark');
+        }
+      });
+    }
   }
 
   getBadge(status: string): string {

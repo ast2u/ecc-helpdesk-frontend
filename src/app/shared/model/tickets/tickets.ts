@@ -8,5 +8,5 @@ export interface Tickets extends Base{
     body: string,
     status: string,
     assignee: Employees,
-    remarks: Remarks
+    remarks: Remarks[]
 }

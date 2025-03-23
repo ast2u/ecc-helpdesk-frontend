@@ -6,9 +6,30 @@
     margin-top: 5rem;
 }
 #imageDetail{
-    max-width:200px
+    max-width:200px;
+    margin: .5rem;
 }
 .clickableUsername{
     text-decoration: none;
-    
+}
+
+#descriptionDetail{
+    white-space: pre-line;
+}
+
+.remarks-container{
+    border: 2px solid #dee2e6;
+    padding: 1rem;
+    border-radius: 15px 50px 50px 15px;
+}
+.temp-userpic{
+    width:80px;
+    padding: 10px;
+}
+.addRemarkDiv{
+    margin-top: 1rem;
+    padding: 10px;
+}
+.non-resizable{
+    resize: none;
 }
