@@ -1,1 +1,102 @@
-<p>roles works!</p>
+
+  <h2 class="p-3">Employee Roles</h2>
+  <div class="row">
+    <!-- Employee Roles List -->
+    <div class="col-12 col-md-6 order-md-1">
+
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col" *ngFor="let role of rolesList">
+          <div class="card m-1">
+            <div class="card-body">
+              <div class="d-flex justify-content-between mb-2">
+                <h4 class="card-title text-truncate me-2">{{ role.role_title }}</h4>
+                <div class="d-flex gap-2 flex-shrink-0">
+                  <button type="button" class="btn btn-primary" (click)="editUpdateRole(role.id)" data-bs-toggle="modal" data-bs-target="#updateRoleModal" title="Edit">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button type="button" class="btn btn-danger" title="Delete" (click)="confirmDelete(role.id)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+              <p class="card-text ">{{ role.role_description | uppercase }}</p>
+              <hr>
+              <h5>Authorities:</h5>
+              <p>READ, WRITE, UPDATE, DELETE</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="updateRoleModal" tabindex="-1" aria-labelledby="updateRoleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="updateRoleModalLabel">Update Employee Role</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="rolesFormUpdate">
+              <div class="mb-3">
+                <label for="updateRoleTitle" class="form-label">Role Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="role_title"
+                  id="updateRoleTitle"
+                  placeholder="Title"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="updateRoleDesc" class="form-label">Role Description</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="role_description"
+                  id="updateRoleDesc"
+                  placeholder="Description"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" (click)="saveUpdateRole()">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Role Form -->
+    <div class="col-12 col-md-6 order-md-2">
+      <div class="addContainer">
+        <h2 class="mb-3">Add New Role</h2>
+        <form [formGroup]="rolesFormAdd">
+          <div class="row mb-3">
+            <div class="col">
+              <label for="roleTitle" class="form-label">Role Title</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="role_title"
+              id="roleTitle"
+              placeholder="Title"
+            />
+            </div>
+            <div class="col">
+              <label for="roleDescription" class="form-label">Role Description</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="role_description"
+              id="roleDescription"
+              placeholder="Description"
+            />
+            </div>
+          </div>
+        </form>
+        <button type="button" class="btn btn-success" (click)="onCreateEmployeeRoles()">ADD NEW ROLE</button>
+      </div>
+    </div>
+  </div>
