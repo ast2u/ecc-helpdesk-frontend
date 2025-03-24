@@ -9,6 +9,7 @@ import { CommonModule, DatePipe, TitleCasePipe } from '@angular/common';
 import { RouterModule} from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { AddTicketModalComponent } from "./add-ticket-modal/add-ticket-modal.component";
+import { Employees } from '../../shared/model/employee/employees';
 
 @Component({
   selector: 'app-tickets',
@@ -23,6 +24,9 @@ export class TicketsComponent implements OnInit {
   activeFilters: { key: string, label: string, value: string }[] = [];
   totalPages = 0;
   currentPage = 0;
+  availableEmployees: Employees[] = [];
+  uniqueAssignees: string[] = [];
+  uniqueUpdatedBy: string[] = [];
   pageSize = 5;
   searchRequest: TicketSearchRequest = {};
   ticketFormAdd: FormGroup = new FormGroup({
@@ -50,6 +54,9 @@ export class TicketsComponent implements OnInit {
         .subscribe(response => {
       this.ticketList = response.content;
       this.totalPages = response.page.totalPages;
+      this.loadEmployee();
+      this.extractUniqueAssignees();
+      this.extractUniqueUpdatedBy()
       this.isLoading = false;
     });
     }else{
@@ -59,9 +66,25 @@ export class TicketsComponent implements OnInit {
       .subscribe(response => {
       this.ticketList = response.content;
       this.totalPages = response.page.totalPages;
+      this.extractUniqueAssignees();
+      this.extractUniqueUpdatedBy()
       this.isLoading = false;
       });
     }
+  }
+
+  extractUniqueAssignees() {
+    const usernames = this.ticketList
+      .map(ticket => ticket.assignee?.username)
+      .filter(username => username);
+  
+    this.uniqueAssignees = [...new Set(usernames)]; // Get unique usernames
+  }
+
+  extractUniqueUpdatedBy() {
+    this.uniqueUpdatedBy = Array.from(
+      new Set(this.ticketList.map(ticket => ticket.updatedBy).filter(username => username))
+    );
   }
 
   onCreateTicket(){
@@ -109,6 +132,19 @@ export class TicketsComponent implements OnInit {
 
   getBadge(status: string): string {
     return this.ticketService.getBadgeClass(status);
+  }
+
+  loadEmployee() {
+    if(this.isAdmin){
+      this.employeeService.getAllEmployeeRaw().subscribe({
+        next: (employee) => {
+          this.availableEmployees = employee.content; // Store available roles
+        },
+        error: (err) => {
+          console.error('Error fetching employees:', err);
+        }
+      });
+    }
   }
   
   onPageChange(newPage: number) {

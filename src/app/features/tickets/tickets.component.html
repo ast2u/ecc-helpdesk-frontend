@@ -8,12 +8,94 @@
           </div>
         </div>
         <div class="col-4">
-          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#searchFilter">
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ticketFilter" >
             <i class="fas fa-filter me-2"></i><span>Filter Search</span>
           </button>
         </div>
       </div>
   </div>
+
+  
+<!-- Search Filter Modal -->
+<div class="modal fade" id="ticketFilter" tabindex="-1" aria-labelledby="ticketFilterLabel">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="ticketFilterLabel">Search Filters</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="ticketNumber">Ticket Number</span>
+              <input type="text" class="form-control" [(ngModel)]="searchRequest.ticketNumber" placeholder="Search by TicketNumber" aria-describedby="ticketNumber">
+            </div>
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="ticketStatus">Ticket Status</label>
+              <select class="form-select" id="ticketStatus" [(ngModel)]="searchRequest.status" >
+                <option selected value="" [attr.selected]="searchRequest.status === '' ? true : null">All</option>
+                <option *ngFor="let status of ['DRAFT', 'FILED', 'IN_PROGRESS', 'CLOSED', 'DUPLICATE']" [value]="status">
+                  {{ status }}
+                </option>
+              </select>
+            </div>
+            <div class="input-group mb-3" *ngIf="isAdmin">
+              <label class="input-group-text" for="createdBy">Created By</label>
+              <select class="form-select" id="createdBy" [(ngModel)]="searchRequest.createdBy" >
+                <option *ngFor="let employee of availableEmployees" [value]="employee.username">
+                  {{ employee.username }}
+                </option>
+              </select>
+            </div>
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="updatedBy">Updated By</label>
+              <select class="form-select" id="updatedBy" [(ngModel)]="searchRequest.updatedBy">
+                <option *ngFor="let updater of uniqueUpdatedBy" [value]="updater">
+                  {{ updater }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="updatedBy">Assignee</label>
+              <select class="form-select" id="updatedBy" [(ngModel)]="searchRequest.assignee">
+                <option *ngFor="let username of uniqueAssignees" [value]="username">
+                  {{ username }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Created Date/Time Range:</label>
+              <div class="d-flex align-items-center gap-2">
+                <span>Start</span>
+                  <input class="form-control w-auto" id="createdStart" type="datetime-local" [(ngModel)]="searchRequest.createdStart" placeholder="Start">
+                  <i class="fas fa-arrow-right"></i>
+                  <span>End</span>
+                  <input class="form-control w-auto" id="createdEnd" type="datetime-local" [(ngModel)]="searchRequest.createdEnd" placeholder="End">
+              </div>
+            </div>
+
+            <div>
+              <label class="form-label">Updated Date/Time Range:</label>
+              <div class="d-flex align-items-center gap-2">
+                <span>Start</span>
+                  <input class="form-control w-auto" id="updatedStart" type="datetime-local" [(ngModel)]="searchRequest.updatedStart" placeholder="Start">
+                  <i class="fas fa-arrow-right"></i>
+                  <span>End</span>
+                  <input class="form-control w-auto" id="updatedEnd" type="datetime-local" [(ngModel)]="searchRequest.updatedEnd"  placeholder="End">
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="applyFilters()" data-bs-dismiss="modal">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <div class="d-flex mb-3">
     <div class="me-auto">
