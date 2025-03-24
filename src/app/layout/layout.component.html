@@ -9,49 +9,49 @@
       </div>
     </div>
     <ul class="sidebar-nav">
-      <div *ngIf="isAdmin">
-      <li class="sidebar-header">Admin Tools</li>
-      <li class="sidebar-item">
-        <a routerLink="/employees" routerLinkActive="active" class="sidebar-link">
-          <i class="fas fa-user"></i>
-          <span>Employees</span>
-        </a>
-      </li>
-      <li class="sidebar-item">
-        <a routerLink="/roles" routerLinkActive="active" class="sidebar-link">
-          <i class="fas fa-user-tie"></i>
-          <span>Employee Roles</span>
-        </a>
-      </li>
-      <li class="sidebar-item">
-        <a routerLink="/tickets" routerLinkActive="active" class="sidebar-link">
-          <i class="fas fa-ticket-simple"></i>
-          <span>All Tickets</span>
-        </a>
-      </li>
-    </div>
-    <div *ngIf="!isAdmin">
-      <li class="sidebar-header">Manage Tickets</li>
-      <li class="sidebar-item">
-        <a routerLink="/tickets" routerLinkActive="active" class="sidebar-link">
-          <i class="fas fa-ticket"></i>
-          <span>Tickets</span>
-        </a>
-      </li>
-      <li class="sidebar-header">Profile Management</li>
-      <li class="sidebar-item">
-        <a routerLink="/profile" routerLinkActive="active" class="sidebar-link">
-          <i class="fas fa-address-card"></i>
-          <span>Profile</span>
-        </a>
-      </li>
-    </div>
+      <ng-container *ngIf="isAdmin">
+        <li class="sidebar-header">Admin Tools</li>
+        <li class="sidebar-item">
+          <a routerLink="/employees" routerLinkActive="active" class="sidebar-link">
+            <i class="fas fa-user"></i>
+            <span>Employees</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a routerLink="/roles" routerLinkActive="active" class="sidebar-link">
+            <i class="fas fa-user-tie"></i>
+            <span>Employee Roles</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a routerLink="/tickets" routerLinkActive="active" class="sidebar-link">
+            <i class="fas fa-ticket-simple"></i>
+            <span>All Tickets</span>
+          </a>
+        </li>
+      </ng-container>
+      <ng-container *ngIf="!isAdmin">
+        <li class="sidebar-header">Manage Tickets</li>
+        <li class="sidebar-item">
+          <a routerLink="/tickets" routerLinkActive="active" class="sidebar-link">
+            <i class="fas fa-ticket"></i>
+            <span>Tickets</span>
+          </a>
+        </li>
+        <li class="sidebar-header">Profile Management</li>
+        <li class="sidebar-item">
+          <a routerLink="/profile" routerLinkActive="active" class="sidebar-link">
+            <i class="fas fa-address-card"></i>
+            <span>Profile</span>
+          </a>
+        </li>
+      </ng-container>
     </ul>
     <div class="sidebar-footer" *ngIf="isLoggedIn">
       <a href="/login" title="Logout" class="sidebar-link" (click)="onLogout()">
         <i class="fas fa-sign-out-alt"></i>
         <span>Logout</span>
-        </a>
+      </a>
     </div>
   </aside>
   <div class="container-fluid main p-3">
