@@ -26,6 +26,8 @@ export class EmployeesComponent implements OnInit {
   activeFilters: { key: string, label: string, value: string }[] = [];
   employeeFormAdd: FormGroup = new FormGroup({});
   employeeFormUpdate: FormGroup = new FormGroup({});
+  uniqueCreatedBy: string[] = [];
+  uniqueUpdatedBy: string[] = [];
   pageSize = 10;
   searchRequest: EmployeeSearchRequest = {};
 
@@ -196,8 +198,18 @@ export class EmployeesComponent implements OnInit {
     }
   }
 
-  onFetchRoles(){
-    this.loadRoles()
+  extractUniqueUsers() {
+    this.uniqueUpdatedBy = this.getUniqueValues(this.employeeList.map(employee => employee.updatedBy));
+    this.uniqueCreatedBy = this.getUniqueValues(this.employeeList.map(employee => employee.createdBy));
+  }
+  
+  private getUniqueValues(userList: (string | null | undefined)[]): string[] {
+    return Array.from(new Set(userList.filter(username => username) as string[]));
+  }
+
+  onClickSearchFilter(){
+    this.loadRoles();
+    this.extractUniqueUsers();
   }
 
   applyFilters() {
