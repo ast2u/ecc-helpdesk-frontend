@@ -8,8 +8,9 @@ import { catchError, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService {
-  private roleApiUrl = 'http://localhost:8080/api/employees/roles';
+  //private roleApiUrl = 'http://localhost:8080/api/employees/roles';
   private apiUrl = 'http://localhost:8080';
+  private employeeUrl = 'http://localhost:8080/api/employees/profile';
   private tokenKey = 'token';
 
   constructor(private http: HttpClient) { }
@@ -29,6 +30,10 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     window.location.href = '/login';
+  }
+
+  changeProfilePassword(request: { oldPassword: string; newPassword: string }): Observable<any> {
+    return this.http.put(`${this.employeeUrl}/change-password`, request);
   }
 
   isLoggedIn(): boolean {
@@ -68,29 +73,28 @@ export class AuthService {
     return roles.includes('ADMIN'); // Adjust based on actual role names
   }
 
+  // getUserRoles(): Observable<string[]> {
+  //   const token = localStorage.getItem('helpdesk-token'); // Get JWT from local storage
 
-  getUserRoles(): Observable<string[]> {
-    const token = localStorage.getItem('helpdesk-token'); // Get JWT from local storage
+  //   if (!token) {
+  //     throw new Error('No token found');
+  //   }
 
-    if (!token) {
-      throw new Error('No token found');
-    }
+  //   let roles: string[] = this.getRolesFromToken(token);
 
-    let roles: string[] = this.getRolesFromToken(token);
+  //   if (roles.length > 0) {
+  //     // ✅ If roles exist in JWT, return them immediately
+  //     return of(roles);
+  //   }
 
-    if (roles.length > 0) {
-      // ✅ If roles exist in JWT, return them immediately
-      return of(roles);
-    }
+  //   // ❌ If roles are missing, fetch from the database
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    // ❌ If roles are missing, fetch from the database
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    return this.http.get<string[]>(this.roleApiUrl, { headers }).pipe(
-      catchError((error) => {
-        console.error('Error fetching roles:', error);
-        return of([]); // Return an empty array on error
-      })
-    );
-  }
+  //   return this.http.get<string[]>(this.roleApiUrl, { headers }).pipe(
+  //     catchError((error) => {
+  //       console.error('Error fetching roles:', error);
+  //       return of([]); // Return an empty array on error
+  //     })
+  //   );
+  // }
 }

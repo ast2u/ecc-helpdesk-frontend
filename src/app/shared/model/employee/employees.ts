@@ -7,6 +7,7 @@ export interface Employees extends Base{
     fullName: Fullname,
     username: string,
     birthDate: string,
+    age: number,
     address: Address,
     contactNumber: string,
     employmentStatus: string,
