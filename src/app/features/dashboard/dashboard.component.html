@@ -1,1 +1,55 @@
-<h1>dashboard works!</h1>
+<div class="container mt-4">
+    <h2 class="mb-3">Dashboard</h2>
+  
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card shadow-sm text-center">
+          <div class="card-header bg-primary text-white">
+            <h5>Created Tickets</h5>
+          </div>
+          <div class="card-body">
+            <h1>{{ createdTicketCount }}</h1>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md-6">
+        <div class="card shadow-sm text-center">
+          <div class="card-header bg-success text-white">
+            <h5>Assigned Tickets</h5>
+          </div>
+          <div class="card-body">
+            <h1>{{ assignedTicketCount }}</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-header bg-secondary text-white">
+            <h5>Created Ticket Status</h5>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let status of createdStatusCounts | keyvalue">
+              {{ status.key }}: <strong>{{ status.value }}</strong>
+            </li>
+          </ul>
+        </div>
+      </div>
+  
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-header bg-dark text-white">
+            <h5>Assigned Ticket Status</h5>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" *ngFor="let status of assignedStatusCounts | keyvalue">
+              {{ status.key }}: <strong>{{ status.value }}</strong>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>

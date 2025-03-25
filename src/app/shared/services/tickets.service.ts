@@ -22,6 +22,14 @@ export class TicketsService {
     const params = this.buildParams(searchRequest, page, size);
     return this.http.get<{ content: Tickets[], page: any }>(this.apiUrl, { params });
   }
+
+  getCreatedTicketCount(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrlUser}/count/created`);
+  }
+  
+  getAssignedTicketCount(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrlUser}/count/assigned`);
+  }
   
   private buildParams(searchRequest: TicketSearchRequest, page: number, size: number): HttpParams {
     let params = new HttpParams().set('page', page).set('size', size);
@@ -55,6 +63,14 @@ export class TicketsService {
     return this.http.put<Tickets>(`${this.apiUrl}/assign/${id}/${employeeId}`, null);
   }
 
+  getCreatedTicketStatusCount(): Observable<{ [key: string]: number }> {
+    return this.http.get<{ [key: string]: number }>(`${this.apiUrlUser}/count/status/created`);
+  }
+  
+  getAssignedTicketStatusCount(): Observable<{ [key: string]: number }> {
+    return this.http.get<{ [key: string]: number }>(`${this.apiUrlUser}/count/status/assigned`);
+  }
+
   deleteTicketById(id:number) : Observable<void>{
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
@@ -69,7 +85,6 @@ export class TicketsService {
       case 'FILED': return 'bg-primary';
       case 'IN_PROGRESS': return 'bg-warning text-dark';
       case 'CLOSED': return 'bg-dark';
-      case 'DUPLICATE': return 'bg-danger';
       default: return 'bg-dark';
     }
   }
