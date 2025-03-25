@@ -119,7 +119,7 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="username"><strong>Username</strong></label>
-                        <p id="username" class="form-control border-1 bg-light usernameDetail" *ngIf="!isEditingCredentials">{{ employeeProfile.username }}</p>
+                        <p id="username" class="form-control border-1 bg-light usernameDetail" *ngIf="employeeProfile && !isEditingCredentials">{{ employeeProfile.username }}</p>
                         <input id="username" formControlName="username" *ngIf="isEditingCredentials" [(ngModel)]="employeeProfile.username" class="form-control">
                     </div>
                 </div>
