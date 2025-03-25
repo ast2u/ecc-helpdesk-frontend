@@ -16,7 +16,13 @@
             <label for="password">Password</label>
         </div>
 
-        <button type="button" class="btn btn-success" (click)="onLogin()">Log In</button>
+        <button type="button" class="btn btn-success" (click)="onLogin()" [class.disabled]="isLoading"
+        [style.pointer-events]="isLoading ? 'none' : 'auto'">
+            <span *ngIf="!isLoading">Log In</span>
+            <div class="spinner-border text-light" *ngIf="isLoading" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </button>
     </form>
 </div>
 
