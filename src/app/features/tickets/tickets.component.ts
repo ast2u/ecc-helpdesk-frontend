@@ -6,7 +6,7 @@ import { EmployeesService } from '../../shared/services/employees.service';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../shared/components/pagination/pagination-component/pagination-component';
 import { CommonModule, DatePipe, TitleCasePipe } from '@angular/common';
-import { RouterModule} from '@angular/router';
+import { ActivatedRoute, RouterModule} from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { AddTicketModalComponent } from "./add-ticket-modal/add-ticket-modal.component";
 import { Employees } from '../../shared/model/employee/employees';
@@ -39,7 +39,8 @@ export class TicketsComponent implements OnInit {
 
   constructor(private ticketService: TicketsService,
     private employeeService: EmployeesService,
-    private authService: AuthService){}
+    private authService: AuthService,
+  private route: ActivatedRoute){}
   
   ngOnInit(): void {
     this.isAdmin = this.authService.isAdminUser();
@@ -47,30 +48,38 @@ export class TicketsComponent implements OnInit {
   }
 
   getTickets(){
-    if(this.isAdmin){
+    this.route.queryParams.subscribe(params => {
+      const assignee = params['assignee']; // Get assignee filter from URL
+  
       this.activeFilters = this.ticketService.updateFilters(this.searchRequest);
+      if (assignee) {
+        this.searchRequest.assignee = assignee; // Apply assignee filter
+      }
       this.isLoading = true;
-      this.ticketService.getAllTickets(this.searchRequest, this.currentPage, this.pageSize)
-        .subscribe(response => {
-      this.ticketList = response.content;
-      this.totalPages = response.page.totalPages;
-      this.loadEmployee();
-      this.extractUniqueAssignees();
-      this.extractUniqueUpdatedBy()
-      this.isLoading = false;
+  
+      if (this.isAdmin && !assignee) {
+        // Admins or users viewing all tickets
+        this.ticketService.getAllTickets(this.searchRequest, this.currentPage, this.pageSize)
+          .subscribe(response => {
+            this.ticketList = response.content;
+            this.totalPages = response.page.totalPages;
+            this.loadEmployee();
+            this.extractUniqueAssignees();
+            this.extractUniqueUpdatedBy();
+            this.isLoading = false;
+          });
+      } else {
+        // Non-admins viewing their assigned tickets
+        this.ticketService.getUserTickets(this.searchRequest, this.currentPage, this.pageSize)
+          .subscribe(response => {
+            this.ticketList = response.content;
+            this.totalPages = response.page.totalPages;
+            this.extractUniqueAssignees();
+            this.extractUniqueUpdatedBy();
+            this.isLoading = false;
+          });
+      }
     });
-    }else{
-      this.activeFilters = this.ticketService.updateFilters(this.searchRequest);
-      this.isLoading = true;
-      this.ticketService.getUserTickets(this.searchRequest, this.currentPage, this.pageSize)
-      .subscribe(response => {
-      this.ticketList = response.content;
-      this.totalPages = response.page.totalPages;
-      this.extractUniqueAssignees();
-      this.extractUniqueUpdatedBy()
-      this.isLoading = false;
-      });
-    }
   }
 
   extractUniqueAssignees() {

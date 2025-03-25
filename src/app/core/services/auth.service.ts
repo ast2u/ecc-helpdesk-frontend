@@ -81,6 +81,19 @@ export class AuthService {
     return roles.includes('ADMIN'); // Adjust based on actual role names
   }
 
+  getToken(): string | null {
+    return localStorage.getItem('token'); // Assuming token is stored in localStorage
+  }
+
+  getUsername(): string | null {
+    const token = this.getToken();
+    if (token) {
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      return decodedToken?.sub || null; // Assuming the username is stored in `sub` field
+    }
+    return null;
+  }
+
   // getUserRoles(): Observable<string[]> {
   //   const token = localStorage.getItem('helpdesk-token'); // Get JWT from local storage
 

@@ -30,6 +30,23 @@ export class TicketsService {
   getAssignedTicketCount(): Observable<number> {
     return this.http.get<number>(`${this.apiUrlUser}/count/assigned`);
   }
+
+  getCreatedTicketStatusCount(): Observable<{ [key: string]: number }> {
+    return this.http.get<{ [key: string]: number }>(`${this.apiUrlUser}/count/status/created`);
+  }
+  
+  getAssignedTicketStatusCount(): Observable<{ [key: string]: number }> {
+    return this.http.get<{ [key: string]: number }>(`${this.apiUrlUser}/count/status/assigned`);
+  }
+
+  getAvailableTicketCount(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/v1/count/available`);
+  }
+  
+  getUnassignedTicketCount(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/v1/count/unassigned`);
+  }
+  
   
   private buildParams(searchRequest: TicketSearchRequest, page: number, size: number): HttpParams {
     let params = new HttpParams().set('page', page).set('size', size);
@@ -61,14 +78,6 @@ export class TicketsService {
 
   assignTicketById(id:number, employeeId: number) : Observable<Tickets>{
     return this.http.put<Tickets>(`${this.apiUrl}/assign/${id}/${employeeId}`, null);
-  }
-
-  getCreatedTicketStatusCount(): Observable<{ [key: string]: number }> {
-    return this.http.get<{ [key: string]: number }>(`${this.apiUrlUser}/count/status/created`);
-  }
-  
-  getAssignedTicketStatusCount(): Observable<{ [key: string]: number }> {
-    return this.http.get<{ [key: string]: number }>(`${this.apiUrlUser}/count/status/assigned`);
   }
 
   deleteTicketById(id:number) : Observable<void>{

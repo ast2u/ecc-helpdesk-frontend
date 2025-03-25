@@ -5,10 +5,13 @@
       <div class="col-md-6">
         <div class="card shadow-sm text-center">
           <div class="card-header bg-primary text-white">
-            <h5>Created Tickets</h5>
+            <h5 *ngIf="!isAdmin">Created Tickets</h5>
+            <h5 *ngIf="isAdmin">Available Tickets</h5>
           </div>
           <div class="card-body">
-            <h1>{{ createdTicketCount }}</h1>
+            <h1 *ngIf="!isAdmin">{{ createdTicketCount }}</h1>
+            <h1 *ngIf="isAdmin">{{ availableTicketCount }}</h1>
+            <button type="button" routerLink="/tickets" routerLinkActive="active" class="btn btn-outline-primary mt-3">VIEW TICKETS</button>
           </div>
         </div>
       </div>
@@ -16,16 +19,20 @@
       <div class="col-md-6">
         <div class="card shadow-sm text-center">
           <div class="card-header bg-success text-white">
-            <h5>Assigned Tickets</h5>
+            <h5 *ngIf="!isAdmin">Assigned Tickets</h5>
+            <h5 *ngIf="isAdmin">Unassigned Tickets</h5>
           </div>
           <div class="card-body">
-            <h1>{{ assignedTicketCount }}</h1>
+            <h1 *ngIf="!isAdmin">{{ assignedTicketCount }}</h1>
+            <h1 *ngIf="isAdmin">{{ unassignedTicketCount }}</h1>
+            <button *ngIf="!isAdmin" type="button" [routerLink]="['/tickets']" 
+            [queryParams]="{ assignee: currentUsername }"  class="btn btn-outline-success mt-3">VIEW ASSIGNED TICKETS</button>
           </div>
         </div>
       </div>
     </div>
   
-    <div class="row mt-4">
+    <div class="row mt-4" *ngIf="!isAdmin">
       <div class="col-md-6">
         <div class="card shadow-sm">
           <div class="card-header bg-secondary text-white">
@@ -33,7 +40,9 @@
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item" *ngFor="let status of createdStatusCounts | keyvalue">
-              {{ status.key }}: <strong>{{ status.value }}</strong>
+              <span class="me-auto badge" [ngClass]="getBadge(status.key)">
+                {{ status.key }}
+              </span> = <strong>{{ status.value }}</strong>
             </li>
           </ul>
         </div>
@@ -46,7 +55,9 @@
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item" *ngFor="let status of assignedStatusCounts | keyvalue">
-              {{ status.key }}: <strong>{{ status.value }}</strong>
+              <span class="me-auto badge" [ngClass]="getBadge(status.key)">
+                {{ status.key }}
+              </span> = <strong>{{ status.value }}</strong>
             </li>
           </ul>
         </div>
