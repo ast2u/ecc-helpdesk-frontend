@@ -32,8 +32,16 @@ export class AuthService {
     window.location.href = '/login';
   }
 
-  changeProfilePassword(request: { oldPassword: string; newPassword: string }): Observable<any> {
-    return this.http.put(`${this.employeeUrl}/change-password`, request);
+  changeProfileCredentials(request: { 
+    username: string; 
+    oldPassword: string; 
+    newPassword: string }): 
+    Observable<{
+      message: string; 
+      status: string; 
+      logout: boolean}> {
+    return this.http.put<{message: string; status: string; logout: boolean}>
+    (`${this.employeeUrl}/change-credentials`, request);
   }
 
   isLoggedIn(): boolean {
