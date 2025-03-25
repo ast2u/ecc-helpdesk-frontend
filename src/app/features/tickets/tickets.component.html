@@ -35,7 +35,7 @@
               <label class="input-group-text" for="ticketStatus">Ticket Status</label>
               <select class="form-select" id="ticketStatus" [(ngModel)]="searchRequest.status" >
                 <option selected value="" [attr.selected]="searchRequest.status === '' ? true : null">All</option>
-                <option *ngFor="let status of ['DRAFT', 'FILED', 'IN_PROGRESS', 'CLOSED', 'DUPLICATE']" [value]="status">
+                <option *ngFor="let status of ['DRAFT', 'FILED', 'IN_PROGRESS', 'CLOSED']" [value]="status">
                   {{ status }}
                 </option>
               </select>

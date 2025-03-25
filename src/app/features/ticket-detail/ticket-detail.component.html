@@ -40,7 +40,7 @@
           </p>
           <label *ngIf="isEditing" class="mb-1" for="statusDetail"><strong>Status:</strong></label>
             <select id="statusDetail" *ngIf="isEditing" class="form-select mb-3" formControlName="status">
-              <option *ngFor="let status of ['DRAFT', 'FILED', 'IN_PROGRESS', 'CLOSED', 'DUPLICATE']" [value]="status">
+              <option *ngFor="let status of ['DRAFT', 'FILED', 'IN_PROGRESS', 'CLOSED']" [value]="status">
                 {{ status }}
               </option>
             </select>
