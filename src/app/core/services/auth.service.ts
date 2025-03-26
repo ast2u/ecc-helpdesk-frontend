@@ -16,13 +16,13 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(username: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, { username, password }).pipe(
+    return this.http.post<any>(`${this.apiUrl}/login`, { username, password }, { withCredentials: true }).pipe(
       tap(response => {
-        localStorage.setItem(this.tokenKey, response.token);
+        localStorage.setItem(this.tokenKey, response.accessToken);
       }),
       catchError(error => {
         console.error('Login failed:', error);
-        return of({ token: null, message: error.error.message });
+        return of({ token: null, message: error.error?.message || "Login failed" });
       })
     );
   }
@@ -30,6 +30,19 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     window.location.href = '/login';
+  }
+
+  refreshToken(): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/refresh`, {}, { withCredentials: true }).pipe(
+      tap(response => {
+        localStorage.setItem(this.tokenKey, response.accessToken);
+      }),
+      catchError(error => {
+        console.error('Token refresh failed:', error);
+        this.logout(); // Force logout if refresh fails
+        return of({ token: null });
+      })
+    );
   }
 
   changeProfileCredentials(request: { 
@@ -53,7 +66,7 @@ export class AuthService {
       const isExpired = decodedToken.exp * 1000 < Date.now();
 
       if (isExpired) {
-        this.logout(); // Automatically log out if expired
+        this.refreshToken().subscribe(); // Automatically log out if expired
         return false;
       }
       return true;
