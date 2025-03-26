@@ -12,8 +12,8 @@
         </div>
 
         <div class="form-floating mb-3">
-            <input type="password" class="form-control" name="password" [(ngModel)]="loginObj.password" placeholder="Username" id="password">
-            <label for="password">Password</label>
+            <input type="password" class="form-control" name="current-password" [(ngModel)]="loginObj.password" placeholder="Username" id="current-password">
+            <label for="current-password">Password</label>
         </div>
         <button type="button" class="btn btn-success" (click)="onLogin()" [class.disabled]="isLoading"
         [style.pointer-events]="isLoading ? 'none' : 'auto'" >
