@@ -156,6 +156,8 @@ export class EmployeesComponent implements OnInit {
           alert('Failed to add employee');
         }
       });
+    } else {
+      return;
     }
   }
 
