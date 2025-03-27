@@ -3,20 +3,19 @@ import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   //private roleApiUrl = 'http://localhost:8080/api/employees/roles';
-  private apiUrl = 'http://localhost:8080';
-  private employeeUrl = 'http://localhost:8080/api/employees/profile';
   private tokenKey = 'token';
 
   constructor(private http: HttpClient) { }
 
   login(username: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, { username, password }).pipe(
+    return this.http.post<any>(`${environment.baseApiUrl}/login`, { username, password }).pipe(
       tap(response => {
         localStorage.setItem(this.tokenKey, response.token);
       }),
@@ -41,7 +40,7 @@ export class AuthService {
       status: string; 
       logout: boolean}> {
     return this.http.put<{message: string; status: string; logout: boolean}>
-    (`${this.employeeUrl}/change-credentials`, request);
+    (`${environment.apiEmployeeUrl}/profile/change-credentials`, request);
   }
 
   isLoggedIn(): boolean {

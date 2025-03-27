@@ -1,24 +1,25 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Employees } from '../model/employee/employees';
-import {Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { EmployeeSearchRequest } from '../model/searchrequest/employee-search-request';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeesService {
-  private apiUrl = 'http://localhost:8080/api/employees';
+  private baseUrl = environment.apiEmployeeUrl;
 
   constructor(private http: HttpClient) { }
 
   getAllEmployees(searchRequest: EmployeeSearchRequest, page = 0, size = 0): Observable<{ content: Employees[], page: any }> {
     const params = this.buildParams(searchRequest, page, size);
-    return this.http.get<{ content: Employees[], page: any }>(this.apiUrl, { params });
+    return this.http.get<{ content: Employees[], page: any }>(this.baseUrl, { params });
   }
 
   getAllEmployeeRaw(): Observable<{content: Employees[]}>{
-    return this.http.get<{content: Employees[]}>(this.apiUrl)
+    return this.http.get<{content: Employees[]}>(this.baseUrl)
   }
 
   private buildParams(searchRequest: EmployeeSearchRequest, page: number, size: number): HttpParams {
@@ -38,19 +39,19 @@ export class EmployeesService {
   }
 
   addEmployee(employee:any): Observable<any>{
-    return this.http.post(this.apiUrl,employee)
+    return this.http.post(this.baseUrl,employee)
   }
 
   deleteEmployee(id:number): Observable<void>{
-    return this.http.delete<void>(this.apiUrl+"/"+id)
+    return this.http.delete<void>(`${this.baseUrl}/${id}`)
   }
 
   updateEmployee(id:number , employee: Employees): Observable<Employees>{
-    return this.http.put<Employees>(`${this.apiUrl}/${id}`,employee)
+    return this.http.put<Employees>(`${this.baseUrl}/${id}`,employee)
   }
 
   getEmployeeById(id : number): Observable<Employees>{
-    return this.http.get<Employees>(this.apiUrl+"/"+id)
+    return this.http.get<Employees>(`${this.baseUrl}/${id}`)
   }
 
   updateActiveFilters(searchRequest: EmployeeSearchRequest): { key: string, label: string, value: string }[] {

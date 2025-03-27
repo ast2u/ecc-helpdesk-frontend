@@ -4,47 +4,49 @@ import { TicketSearchRequest } from '../model/searchrequest/ticket-search-reques
 import { Observable } from 'rxjs';
 import { Tickets } from '../model/tickets/tickets';
 import { Remarks } from '../model/tickets/remarks';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TicketsService {
-  private apiUrlUser = 'http://localhost:8080/api/tickets/v1/me';
-  private apiUrl = 'http://localhost:8080/api/tickets';
+  private baseUrlUser = `${environment.apiTicketsUrl}/v1/me`;
+  private baseUrl = `${environment.apiTicketsUrl}`;
+  
   constructor(private http: HttpClient) { }
 
   getUserTickets(searchRequest: TicketSearchRequest, page = 0, size = 0): Observable<{ content: Tickets[], page: any }> {
       const params = this.buildParams(searchRequest, page, size);
-      return this.http.get<{ content: Tickets[], page: any }>(this.apiUrlUser, { params });
+      return this.http.get<{ content: Tickets[], page: any }>(this.baseUrlUser, { params });
   }
 
   getAllTickets(searchRequest: TicketSearchRequest, page = 0, size = 0): Observable<{ content: Tickets[], page: any }> {
     const params = this.buildParams(searchRequest, page, size);
-    return this.http.get<{ content: Tickets[], page: any }>(this.apiUrl, { params });
+    return this.http.get<{ content: Tickets[], page: any }>(this.baseUrl, { params });
   }
 
   getCreatedTicketCount(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrlUser}/count/created`);
+    return this.http.get<number>(`${this.baseUrlUser}/count/created`);
   }
   
   getAssignedTicketCount(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrlUser}/count/assigned`);
+    return this.http.get<number>(`${this.baseUrlUser}/count/assigned`);
   }
 
   getCreatedTicketStatusCount(): Observable<{ [key: string]: number }> {
-    return this.http.get<{ [key: string]: number }>(`${this.apiUrlUser}/count/status/created`);
+    return this.http.get<{ [key: string]: number }>(`${this.baseUrlUser}/count/status/created`);
   }
   
   getAssignedTicketStatusCount(): Observable<{ [key: string]: number }> {
-    return this.http.get<{ [key: string]: number }>(`${this.apiUrlUser}/count/status/assigned`);
+    return this.http.get<{ [key: string]: number }>(`${this.baseUrlUser}/count/status/assigned`);
   }
 
   getAvailableTicketCount(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/v1/count/available`);
+    return this.http.get<number>(`${this.baseUrl}/v1/count/available`);
   }
   
   getUnassignedTicketCount(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/v1/count/unassigned`);
+    return this.http.get<number>(`${this.baseUrl}/v1/count/unassigned`);
   }
   
   
@@ -65,27 +67,27 @@ export class TicketsService {
   }
 
   createTicket(ticket:Tickets): Observable<Tickets>{
-    return this.http.post<Tickets>(`${this.apiUrl}/create`,ticket)
+    return this.http.post<Tickets>(`${this.baseUrl}/create`,ticket)
   }
 
   getTicketById(id : number) : Observable<Tickets>{
-    return this.http.get<Tickets>(`${this.apiUrl}/${id}`);
+    return this.http.get<Tickets>(`${this.baseUrl}/${id}`);
   }
 
   updateTicketById(id:number, tickets: Tickets) : Observable<Tickets>{
-    return this.http.put<Tickets>(`${this.apiUrl}/update/${id}`, tickets);
+    return this.http.put<Tickets>(`${this.baseUrl}/update/${id}`, tickets);
   }
 
   assignTicketById(id:number, employeeId: number) : Observable<Tickets>{
-    return this.http.put<Tickets>(`${this.apiUrl}/assign/${id}/${employeeId}`, null);
+    return this.http.put<Tickets>(`${this.baseUrl}/assign/${id}/${employeeId}`, null);
   }
 
   deleteTicketById(id:number) : Observable<void>{
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 
   addRemarksInTicket(ticketId:number, remarks: Remarks): Observable<Remarks>{
-    return this.http.post<Remarks>(`${this.apiUrl}/${ticketId}/remarks/add`, remarks);
+    return this.http.post<Remarks>(`${this.baseUrl}/${ticketId}/remarks/add`, remarks);
   }
 
   getBadgeClass(status: string): string {
