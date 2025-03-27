@@ -38,6 +38,7 @@
             <span>Tickets</span>
           </a>
         </li>
+      </ng-container>
         <li class="sidebar-header">Profile Management</li>
         <li class="sidebar-item">
           <a routerLink="/profile" routerLinkActive="active" class="sidebar-link">
@@ -45,7 +46,6 @@
             <span>Profile</span>
           </a>
         </li>
-      </ng-container>
     </ul>
     <div class="sidebar-footer" *ngIf="isLoggedIn">
       <a href="/login" title="Logout" class="sidebar-link" (click)="onLogout()">

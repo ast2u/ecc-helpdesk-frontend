@@ -1,4 +1,4 @@
-<h2 class="mb-4 text-center text-success"><strong>Employee Profile</strong></h2>
+<h1 class="mb-4 text-center text-success"><strong>Profile</strong></h1>
 <div class="d-flex justify-content-center">
     <div class="card shadow-lg card-profile">
         <div class="card-body">
@@ -13,9 +13,6 @@
             <div class="text-center mb-5">
                 <img src="profile.png" alt="Profile Image" class="rounded-circle profileImage">
                 <h3 class="mt-3 text-success">{{ employeeProfile.username }}</h3>
-                <!-- <button type="button" *ngIf="!isEditing" class="btn btn-primary btn-sm mt-2" data-bs-target="#editCredentials" data-bs-toggle="modal">
-                    <i class="fas fa-user-pen me-2"></i><strong>Change Password</strong>
-                </button> -->
             </div>
             <form [formGroup]="profileFormUpdate">
             <div class="row">
