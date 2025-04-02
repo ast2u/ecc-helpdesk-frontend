@@ -108,7 +108,7 @@
         </form>
         </div>
         <hr>
-            <form [formGroup]="passwordForm" class="row mt-4">
+            <form [formGroup]="passwordForm" class="row mt-4" *ngIf="!isLoader">
                 <div class="col-12">
                     <h4 class="mb-3 text-success"><strong>Credentials</strong></h4>
                 </div>
@@ -140,7 +140,7 @@
                 </div>
             </form>
 
-            <div class="text-end mt-4">
+            <div class="text-end mt-4" *ngIf="!isLoader">
                 <button type="button" class="btn btn-success" *ngIf="!isEditingCredentials" (click)="toggleCredentialEditing()"><i class="fas fa-key me-2">
                     </i><strong>EDIT CREDENTIALS</strong>
                 </button>
